@@ -4,6 +4,7 @@ const UserSchema = mongoose.Schema(
     {
         username: {
             type: String,
+            trim: true,
             require: true,
         },
         password: {
@@ -12,6 +13,13 @@ const UserSchema = mongoose.Schema(
         },
         email: {
             type: String,
+            trim: true,
+            require: true,
+        },
+        role: {
+            type: mongoose.Schema.Types.ObjectId,
+            trim: true,
+            ref: 'Role',
             require: true,
         },
     },

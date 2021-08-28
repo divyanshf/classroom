@@ -11,7 +11,12 @@ exports.getAllClasses = async (req, res) => {
     } else {
         classes = await Class.find({ admin: user._id });
     }
-    res.json({ role: role.name, classes: classes });
+    res.json({ classes: classes });
+};
+exports.getClassById = async (req, res) => {
+    const user = req.user;
+    const cls = await Class.findById(req.params.id);
+    res.json({ class: cls });
 };
 
 // Add a new class

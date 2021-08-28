@@ -4,6 +4,7 @@ const classController = require('../controllers/classController');
 
 // Get classes route
 router.get('/', authController.isUser, classController.getAllClasses);
+router.get('/:id', authController.isUser, classController.getClassById);
 
 // Create a new class
 router.post('/', authController.isTeacher, classController.addClass);

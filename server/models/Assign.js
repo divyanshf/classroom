@@ -10,10 +10,12 @@ const AssignSchema = mongoose.Schema(
             type: Number,
             require: true,
         },
-        link: {
-            type: String,
-            require: true,
-        },
+        questions: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Qna',
+            },
+        ],
         due: {
             type: Date,
             require: true,
@@ -22,6 +24,6 @@ const AssignSchema = mongoose.Schema(
     { timestamps: true }
 );
 
-const Assign = mongoose.model('Role', AssignSchema);
+const Assign = mongoose.model('Assign', AssignSchema);
 
 module.exports = { Assign, AssignSchema };

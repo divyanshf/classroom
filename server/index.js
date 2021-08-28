@@ -3,6 +3,7 @@ require('./config/dbConfig');
 const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
+const classRoutes = require('./routes/classRoutes');
 const cookieParser = require('cookie-parser');
 
 // Set up the PORT
@@ -15,6 +16,7 @@ app.use(cookieParser());
 
 // Set up the routes
 app.use('/auth', authRoutes);
+app.use('/class', classRoutes);
 
 // Set up cors
 app.use(

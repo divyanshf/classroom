@@ -17,7 +17,7 @@ const ClassSchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
-        students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], //  Students in the class
+        students: [{ type: String, ref: 'User' }], //  Students in the class // referencing emails here
         assign: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Assign' }], //  Assignments in the claass
     },
     {

@@ -10,9 +10,82 @@ const accessExpiry = 60 * 15; //  15 minutes
 const refreshExpiry = 60 * 60 * 24 * 30; //  30 days
 
 // Middlewares for authorization and authentication checks
-exports.isUser = (req, res, next) => {};
-exports.isTeacher = (req, res, next) => {};
-exports.isStudent = (req, res, next) => {};
+exports.isUser = async (req, res, next) => {
+    const token = req.cookies.access;
+    if (!token) {
+        res.json({ error: 'Unverified user.' });
+        return;
+    }
+    const user = verifyToken(token);
+    if (!user) {
+        const access = regenerateAccessToken(req, res);
+        if (!access) {
+            res.json({ error: 'Invalid Token' });
+            return;
+        }
+        res.cookie('access', access, {
+            httpOnly: true,
+            maxAge: accessExpiry * 1000,
+            // secure: true,
+        });
+    }
+    req.user = user;
+    next();
+};
+exports.isTeacher = async (req, res, next) => {
+    const token = req.cookies.access;
+    if (!token) {
+        res.json({ error: 'Unverified user.' });
+        return;
+    }
+    const user = verifyToken(token);
+    if (!user) {
+        const access = regenerateAccessToken(req, res);
+        if (!access) {
+            res.json({ error: 'Invalid Token' });
+            return;
+        }
+        res.cookie('access', access, {
+            httpOnly: true,
+            maxAge: accessExpiry * 1000,
+            // secure: true,
+        });
+    }
+    const role = await Role.findById(user.role);
+    if (role.name !== 'Teacher') {
+        res.json({ error: 'Unauthorized user.' });
+        return;
+    }
+    req.user = user;
+    next();
+};
+exports.isStudent = async (req, res, next) => {
+    const token = req.cookies.access;
+    if (!token) {
+        res.json({ error: 'Unverified user.' });
+        return;
+    }
+    const user = verifyToken(token);
+    if (!user) {
+        const access = regenerateAccessToken(req, res);
+        if (!access) {
+            res.json({ error: 'Invalid Token' });
+            return;
+        }
+        res.cookie('access', access, {
+            httpOnly: true,
+            maxAge: accessExpiry * 1000,
+            // secure: true,
+        });
+    }
+    const role = await Role.findById(user.role);
+    if (role.name !== 'Student') {
+        res.json({ error: 'Unauthorized user.' });
+        return;
+    }
+    req.user = user;
+    next();
+};
 
 // Helper functions
 const userExists = async (email) => {
@@ -38,6 +111,15 @@ const createRefreshToken = (user) => {
     return jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: refreshExpiry,
     });
+};
+const regenerateAccessToken = async (req, res) => {
+    const refreshToken = req.cookies.refresh;
+    if (!refreshToken) return null;
+    const dec = verifyToken(refreshToken);
+    if (!dec) return null;
+    const user = await User.findById(dec._id);
+    if (!user) return null;
+    return createJWT(user);
 };
 const verifyToken = (token) => {
     try {

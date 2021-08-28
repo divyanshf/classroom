@@ -5,6 +5,10 @@ const { User } = require('../models/User');
 const { Role } = require('../models/Role');
 const saltRounds = 10;
 
+// Time in seconds
+const accessExpiry = 60 * 15; //  15 minutes
+const refreshExpiry = 60 * 60 * 24 * 30; //  30 days
+
 // Middlewares for authorization and authentication checks
 exports.isUser = (req, res, next) => {};
 exports.isTeacher = (req, res, next) => {};
@@ -25,9 +29,23 @@ const comparePassword = async (password, hash) => {
 };
 const createJWT = (user) => {
     return jwt.sign(
-        { email: user.email, username: user.username },
-        process.env.JWT_SECRET
+        { email: user.email, role: user.role },
+        process.env.JWT_SECRET,
+        { expiresIn: accessExpiry }
     );
+};
+const createRefreshToken = (user) => {
+    return jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: refreshExpiry,
+    });
+};
+const verifyToken = (token) => {
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        return decoded;
+    } catch (e) {
+        return null;
+    }
 };
 
 // Controllers for authentication
@@ -44,6 +62,18 @@ exports.signup = async (req, res) => {
             role: role._id,
         });
         await newUser.save();
+        const token = createJWT(newUser);
+        const refreshToken = createRefreshToken(newUser);
+        res.cookie('access', token, {
+            httpOnly: true,
+            maxAge: accessExpiry * 1000,
+            // secure: true,
+        });
+        res.cookie('refresh', refreshToken, {
+            httpOnly: true,
+            maxAge: refreshExpiry * 1000,
+            // secure: true,
+        });
         res.json({ success: 'User successfully created.' });
     } catch (e) {
         res.json({ error: e || 'Something went wrong!' });
@@ -59,10 +89,34 @@ exports.signin = async (req, res) => {
             isUser.password
         );
         if (!checkPassword) throw 'Invalid credentials.';
-        res.json({ success: 'User logged in successfully.' });
+        const token = createJWT(isUser);
+        const refreshToken = createRefreshToken(isUser);
+        res.cookie('access', token, {
+            httpOnly: true,
+            maxAge: accessExpiry * 1000,
+            // secure: true,
+        });
+        res.cookie('refresh', refreshToken, {
+            httpOnly: true,
+            maxAge: refreshExpiry * 1000,
+            // secure: true,
+        });
+        res.json({ success: 'User successfully logged in.' });
     } catch (e) {
         res.json({ error: e || 'Something went wrong!' });
     }
 };
 
-exports.logout = (req, res) => {};
+exports.logout = (req, res) => {
+    res.cookie('access', '', {
+        httpOnly: true,
+        // maxAge: accessExpiry * 1000,
+        // secure: true,
+    });
+    res.cookie('refresh', '', {
+        httpOnly: true,
+        // maxAge: refreshExpiry * 1000,
+        // secure: true,
+    });
+    res.json({ success: 'Logged out successfully.' });
+};

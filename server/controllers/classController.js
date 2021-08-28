@@ -11,18 +11,22 @@ exports.getAllClasses = async (req, res) => {
     } else {
         classes = await Class.find({ admin: user._id });
     }
-    res.json({ classes: classes });
+    res.json({ classes });
 };
 exports.getClassById = async (req, res) => {
     const user = req.user;
     const cls = await Class.findById(req.params.id);
-    res.json({ class: cls });
+    if (cls.admin === user._id || user.email in cls.students) {
+        res.json({ class: cls });
+        return;
+    }
+    res.json({ error: 'Unauthorized user.' });
 };
 
 // Add a new class
 exports.addClass = async (req, res) => {
+    const user = req.user;
     try {
-        const user = req.user;
         const newClass = new Class({
             title: req.body.title,
             books: req.body.books,
@@ -41,14 +45,19 @@ exports.addClass = async (req, res) => {
 // Update and existing class
 exports.updateClass = async (req, res) => {
     try {
-        const cls = await Class.findByIdAndUpdate(req.params.id, {
-            title: req.body.title,
-            books: req.body.books,
-            link: req.body.link,
-            students: req.body.students,
-            assign: req.body.assign,
-        });
-        res.json({ success: 'Added class successfully' });
+        const cls = await Class.findById(req.params.id);
+        if (cls.admin === user._id) {
+            await Class.findByIdAndUpdate(req.params.id, {
+                title: req.body.title,
+                books: req.body.books,
+                link: req.body.link,
+                students: req.body.students,
+                assign: req.body.assign,
+            });
+            res.json({ success: 'Added class successfully' });
+            return;
+        }
+        throw 'Unauthorized User.';
     } catch (e) {
         res.json({ error: e || 'Something went wrong!' });
     }

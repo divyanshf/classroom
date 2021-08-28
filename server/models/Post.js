@@ -17,6 +17,11 @@ const PostSchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Class',
         },
+        author: {
+            //  Author of the post
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        },
     },
     { timestamps: true }
 );

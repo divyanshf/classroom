@@ -1,8 +1,10 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const { User } = require('../models/User');
 const { Role } = require('../models/Role');
+const { Class } = require('../models/Class');
 const saltRounds = 10;
 
 // Time in seconds
@@ -20,7 +22,6 @@ exports.isUser = async (req, res, next) => {
     let user = verifyToken(token);
     if (!user) {
         const access = await regenerateAccessToken(refreshToken);
-        console.log(access);
         if (!access) {
             res.json({ error: 'Invalid Token' });
             return;
@@ -93,6 +94,23 @@ exports.isStudent = async (req, res, next) => {
     }
     next();
 };
+exports.isMember = async (req, res, next) => {
+    const user = req.user;
+    try {
+        const cls = await Class.findById(req.params.id);
+        if (
+            cls.admin.toString() === user._id ||
+            cls.students.filter((stud) => stud.user === user.email).length > 0
+        ) {
+            next();
+            return;
+        }
+        throw 'Unauthorized User';
+    } catch (e) {
+        res.json({ error: e || 'Something went wrong' });
+        return;
+    }
+};
 
 // Helper functions
 const userExists = async (email) => {
@@ -109,9 +127,16 @@ const comparePassword = async (password, hash) => {
 };
 const createJWT = (user) => {
     return jwt.sign(
-        { email: user.email, role: user.role },
+        {
+            _id: user._id,
+            email: user.email,
+            role: user.role,
+            username: user.username,
+        },
         process.env.JWT_SECRET,
-        { expiresIn: accessExpiry }
+        {
+            expiresIn: accessExpiry,
+        }
     );
 };
 const createRefreshToken = (user) => {
@@ -120,13 +145,10 @@ const createRefreshToken = (user) => {
     });
 };
 const regenerateAccessToken = async (refreshToken) => {
-    console.log(refreshToken);
     if (!refreshToken) return null;
     const dec = verifyToken(refreshToken);
-    console.log(dec);
     if (!dec) return null;
     const user = await User.findById(dec.id);
-    console.log(user);
     if (!user) return null;
     return createJWT(user);
 };
@@ -143,7 +165,6 @@ const verifyToken = (token) => {
 exports.signup = async (req, res) => {
     try {
         const isUser = await userExists(req.body.email);
-        console.log(isUser);
         if (isUser) throw 'User already exists.';
         const role = await Role.findOne({ name: req.body.role });
         const newUser = new User({

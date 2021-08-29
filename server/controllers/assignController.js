@@ -64,11 +64,8 @@ exports.updateAssignment = async (req, res) => {
             await Assign.findByIdAndUpdate(req.params.id, {
                 $set: {
                     title: req.body.title || assign.title,
-                    points: req.body.points || assign.points,
                     questions: req.body.questions || assign.questions,
                     due: new Date(req.body.due) || assign.due,
-                    submissions: assign.submissions,
-                    classID: assign.classID,
                 },
             });
             res.json({ success: 'Successfully updated assignment' });
@@ -96,10 +93,22 @@ exports.submitSol = async (req, res) => {
         if (
             cls.students.filter((stud) => stud.user === user.email).length > 0
         ) {
+            const subs = req.body.subs;
+            console.log(subs);
+            const points = assign.questions.reduce(
+                (points, question, index) => {
+                    return (
+                        points +
+                        (subs[index] === question.correct ? question.points : 0)
+                    );
+                },
+                0
+            );
             await Assign.findByIdAndUpdate(req.params.id, {
                 $push: {
                     submissions: {
                         user: user.email,
+                        points: points,
                     },
                 },
             });

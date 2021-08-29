@@ -6,15 +6,12 @@ const AssignSchema = mongoose.Schema(
             type: String,
             require: true,
         },
-        points: {
-            type: Number,
-            require: true,
-        },
         questions: [
             {
                 question: { type: String, require: true },
                 options: [{ type: String, require: true }],
                 correct: { type: String, require: true },
+                points: { type: Number, default: 1, require: true },
             },
         ],
         submissions: [

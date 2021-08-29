@@ -16,9 +16,15 @@ const ClassSchema = mongoose.Schema(
             //  Admin of the class or teacher
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
+            require: true,
         },
-        students: [{ type: String, ref: 'User' }], //  Students in the class // referencing emails here
-        assign: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Assign' }], //  Assignments in the claass
+        posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }], // All the posts of the class
+        students: [
+            {
+                user: { type: String, ref: 'User' },
+                points: { type: Number, default: 0 },
+            },
+        ], //  Students in the class // referencing emails here
     },
     {
         timestamps: true,

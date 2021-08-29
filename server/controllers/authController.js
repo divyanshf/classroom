@@ -1,8 +1,10 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const { User } = require('../models/User');
 const { Role } = require('../models/Role');
+const { Class } = require('../models/Class');
 const saltRounds = 10;
 
 // Time in seconds
@@ -12,17 +14,19 @@ const refreshExpiry = 60 * 60 * 24 * 30; //  30 days
 // Middlewares for authorization and authentication checks
 exports.isUser = async (req, res, next) => {
     const token = req.cookies.access;
-    if (!token) {
+    const refreshToken = req.cookies.refresh;
+    if (!token && !refreshToken) {
         res.json({ error: 'Unverified user.' });
         return;
     }
-    const user = verifyToken(token);
+    let user = verifyToken(token);
     if (!user) {
-        const access = regenerateAccessToken(req, res);
+        const access = await regenerateAccessToken(refreshToken);
         if (!access) {
             res.json({ error: 'Invalid Token' });
             return;
         }
+        user = verifyToken(access);
         res.cookie('access', access, {
             httpOnly: true,
             maxAge: accessExpiry * 1000,
@@ -34,57 +38,78 @@ exports.isUser = async (req, res, next) => {
 };
 exports.isTeacher = async (req, res, next) => {
     const token = req.cookies.access;
-    if (!token) {
+    const refreshToken = req.cookies.refresh;
+    if (!token && !refreshToken) {
         res.json({ error: 'Unverified user.' });
         return;
     }
-    const user = verifyToken(token);
+    let user = verifyToken(token);
     if (!user) {
-        const access = regenerateAccessToken(req, res);
+        const access = await regenerateAccessToken(refreshToken);
         if (!access) {
             res.json({ error: 'Invalid Token' });
             return;
         }
+        user = verifyToken(access);
         res.cookie('access', access, {
             httpOnly: true,
             maxAge: accessExpiry * 1000,
             // secure: true,
         });
     }
+    req.user = user;
     const role = await Role.findById(user.role);
     if (role.name !== 'Teacher') {
         res.json({ error: 'Unauthorized user.' });
         return;
     }
-    req.user = user;
     next();
 };
 exports.isStudent = async (req, res, next) => {
     const token = req.cookies.access;
-    if (!token) {
+    const refreshToken = req.cookies.refresh;
+    if (!token && !refreshToken) {
         res.json({ error: 'Unverified user.' });
         return;
     }
-    const user = verifyToken(token);
+    let user = verifyToken(token);
     if (!user) {
-        const access = regenerateAccessToken(req, res);
+        const access = await regenerateAccessToken(refreshToken);
         if (!access) {
             res.json({ error: 'Invalid Token' });
             return;
         }
+        user = verifyToken(access);
         res.cookie('access', access, {
             httpOnly: true,
             maxAge: accessExpiry * 1000,
             // secure: true,
         });
     }
+    req.user = user;
     const role = await Role.findById(user.role);
     if (role.name !== 'Student') {
         res.json({ error: 'Unauthorized user.' });
         return;
     }
-    req.user = user;
     next();
+};
+exports.isMember = async (req, res, next) => {
+    const user = req.user;
+    try {
+        const cls = await Class.findById(req.params.id);
+        if (
+            cls.admin.toString() === user._id ||
+            cls.students.filter((stud) => stud.user === user.email).length > 0
+        ) {
+            next();
+            return;
+        }
+        throw 'Unauthorized User';
+    } catch (e) {
+        res.json({ error: e || 'Something went wrong' });
+        return;
+    }
 };
 
 // Helper functions
@@ -102,9 +127,16 @@ const comparePassword = async (password, hash) => {
 };
 const createJWT = (user) => {
     return jwt.sign(
-        { email: user.email, role: user.role },
+        {
+            _id: user._id,
+            email: user.email,
+            role: user.role,
+            username: user.username,
+        },
         process.env.JWT_SECRET,
-        { expiresIn: accessExpiry }
+        {
+            expiresIn: accessExpiry,
+        }
     );
 };
 const createRefreshToken = (user) => {
@@ -112,12 +144,11 @@ const createRefreshToken = (user) => {
         expiresIn: refreshExpiry,
     });
 };
-const regenerateAccessToken = async (req, res) => {
-    const refreshToken = req.cookies.refresh;
+const regenerateAccessToken = async (refreshToken) => {
     if (!refreshToken) return null;
     const dec = verifyToken(refreshToken);
     if (!dec) return null;
-    const user = await User.findById(dec._id);
+    const user = await User.findById(dec.id);
     if (!user) return null;
     return createJWT(user);
 };
@@ -134,7 +165,6 @@ const verifyToken = (token) => {
 exports.signup = async (req, res) => {
     try {
         const isUser = await userExists(req.body.email);
-        console.log(isUser);
         if (isUser) throw 'User already exists.';
         const role = await Role.findOne({ name: req.body.role });
         const newUser = new User({

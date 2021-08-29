@@ -186,7 +186,7 @@ exports.signup = async (req, res) => {
             maxAge: refreshExpiry * 1000,
             // secure: true,
         });
-        res.json({ success: 'User successfully created.' });
+        res.json({ email: newUser.email, username: newUser.username });
     } catch (e) {
         res.json({ error: e || 'Something went wrong!' });
     }
@@ -213,7 +213,7 @@ exports.signin = async (req, res) => {
             maxAge: refreshExpiry * 1000,
             // secure: true,
         });
-        res.json({ success: 'User successfully logged in.' });
+        res.json({ email: isUser.email, username: isUser.username });
     } catch (e) {
         res.json({ error: e || 'Something went wrong!' });
     }

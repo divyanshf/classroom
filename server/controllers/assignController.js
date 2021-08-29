@@ -94,7 +94,6 @@ exports.submitSol = async (req, res) => {
             cls.students.filter((stud) => stud.user === user.email).length > 0
         ) {
             const subs = req.body.subs;
-            console.log(subs);
             const points = assign.questions.reduce(
                 (points, question, index) => {
                     return (

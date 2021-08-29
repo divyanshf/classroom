@@ -24,6 +24,7 @@ exports.getAllClasses = async (req, res) => {
 exports.getClassById = async (req, res) => {
     try {
         const cls = await Class.findById(req.params.id);
+        if (!cls) throw 'Class unavailable';
         res.json({ class: cls });
         return;
     } catch (e) {
@@ -41,7 +42,6 @@ exports.addClass = async (req, res) => {
             link: req.body.link,
             admin: user._id,
             students: req.body.students,
-            assign: [],
         });
         await newClass.save();
         res.json({ success: 'Added class successfully' });
@@ -54,12 +54,12 @@ exports.addClass = async (req, res) => {
 exports.updateClass = async (req, res) => {
     try {
         const cls = await Class.findById(req.params.id);
+        if (!cls) throw 'Class unavailable';
         await Class.findByIdAndUpdate(req.params.id, {
             title: req.body.title || cls.title,
             books: req.body.books || cls.books,
             link: req.body.link || cls.link,
             students: req.body.students || cls.students,
-            assign: req.body.assign || cls.assign,
         });
         res.json({ success: 'Added class successfully' });
         return;
@@ -73,6 +73,7 @@ exports.joinUser = async (req, res) => {
     const user = req.user;
     try {
         const cls = await Class.findById(req.params.id);
+        if (!cls) throw 'Class unavailable';
         if (user.email in cls.students.map((stud) => stud.user)) {
             res.json({ error: 'Already a student of the class' });
             return;

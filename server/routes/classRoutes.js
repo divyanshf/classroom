@@ -2,7 +2,9 @@ const router = require('express').Router();
 const authController = require('../controllers/authController');
 const classController = require('../controllers/classController');
 const postsController = require('../controllers/postsController');
+const assignController = require('../controllers/assignController');
 
+/* CLASS STUFF */
 // Get classes route
 router.get('/', authController.isUser, classController.getAllClasses);
 router.get(
@@ -23,6 +25,7 @@ router.patch(
     classController.updateClass
 );
 
+/* POSTS STUFF */
 // Get all the posts of a class
 router.get(
     '/:id/posts',
@@ -39,9 +42,24 @@ router.post(
     postsController.addPostToClass
 );
 
-// Update an existing post
-router.patch('/posts/:id', authController.isUser, postsController.updatePost);
+/* ASSIGNMENT STUFF */
+// Get assignments
+router.get(
+    '/:id/assign',
+    authController.isUser,
+    authController.isMember,
+    assignController.getAssignments
+);
 
+// Post a assignment
+router.post(
+    '/:id/assign',
+    authController.isTeacher,
+    authController.isMember,
+    assignController.addAssignment
+);
+
+/* JOIN A CLASS */
 // Join a classroom
 router.post('/join/:id', authController.isStudent, classController.joinUser);
 

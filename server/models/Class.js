@@ -25,7 +25,6 @@ const ClassSchema = mongoose.Schema(
                 points: { type: Number, default: 0 },
             },
         ], //  Students in the class // referencing emails here
-        assign: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Assign' }], //  Assignments in the claass
     },
     {
         timestamps: true,

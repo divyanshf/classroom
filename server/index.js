@@ -4,6 +4,8 @@ const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const classRoutes = require('./routes/classRoutes');
+const postRoutes = require('./routes/postRoutes');
+const assignRoutes = require('./routes/assignRoutes');
 const cookieParser = require('cookie-parser');
 
 // Set up the PORT
@@ -17,6 +19,8 @@ app.use(cookieParser());
 // Set up the routes
 app.use('/auth', authRoutes);
 app.use('/class', classRoutes);
+app.use('/posts', postRoutes);
+app.use('/assign', assignRoutes);
 
 // Set up cors
 app.use(

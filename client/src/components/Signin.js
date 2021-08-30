@@ -1,7 +1,10 @@
-import React,{ useState } from 'react'
+import React,{ useState, useContext } from 'react'
 import { NavLink } from 'react-router-dom';
 import { Col, Container, Row,Form,Button, Media, Image,Spinner } from 'react-bootstrap'
 import { MdAccountBox, MdEmail, MdLock } from "react-icons/md";
+
+import { UserContext } from "../context/userContext"
+
 import { FaChalkboardTeacher } from "react-icons/fa";
 import Navbar1 from './Navbar';
 
@@ -9,7 +12,64 @@ const Signin = () => {
     const [name,setName] = useState('');
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
+    const [err, setErr] = useState('');
+
     const [loader, setLoader] = useState(false);
+
+    const [user, setUser] = useContext(UserContext) 
+
+    const onChangeHandler = (e) => {
+        switch(e.target.name){
+            case "name":
+                setName(e.target.value)
+                break
+            case "email":
+                setEmail(e.target.value)
+                break
+            case "password":
+                setPassword(e.target.value)
+                break 
+        }
+    }
+
+    const submitHandler = () => {
+        if(!name || !email || !password){
+            //empty field
+            setErr("Empty field!")
+        }else{
+            //if password matched
+            fetchClassPosts().then(res => {
+                console.log(res);
+                if(!res.error){
+                    setUser({
+                        username: res.user.username,
+                        email: res.user.email,
+                        role: res.user.role
+                    })
+                }else{
+                    setErr(res.error)
+                }
+            })
+        }
+
+    }
+
+    const fetchClassPosts = async () => {
+        let res = await fetch("http://localhost:8080/auth/signin", {
+            headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body : {
+                'email': email,
+                'password': password,
+            }
+        });
+        res = await res.json();
+        return res;
+    };
+
+
 
     return (
         <>
@@ -22,26 +82,27 @@ const Signin = () => {
                             <Form.Group as={Row} className="mb-3 justify-content-center align-content-center">
                                 <Form.Label column md="1" xs="1"><MdAccountBox style={{fontSize:"20px"}}/></Form.Label>
                                 <Col md="8" xs="10">
-                                    <Form.Control className="form_bg1" name="name" value={name} onChange={(e) => setName(e.target.value)} type="text" placeholder="Username" autoComplete="off"/>
+                                    <Form.Control className="form_bg1" name="name" value={name} onChange={submitHandler} type="text" placeholder="Username" autoComplete="off"/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3 justify-content-center align-content-center">
                                 <Form.Label column md="1" xs="1"><MdEmail style={{fontSize:"20px"}}/></Form.Label>
                                 <Col md="8" xs="10">
-                                    <Form.Control className="form_bg1" name="email" value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Enter email" autoComplete="off"/>
+                                    <Form.Control className="form_bg1" name="email" value={email} onChange={submitHandler} type="email" placeholder="Enter email" autoComplete="off"/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3 justify-content-center align-content-center">
                                 <Form.Label column md="1" xs="1"><MdLock style={{fontSize:"20px"}}/></Form.Label>
                                 <Col md="8" xs="10">
-                                    <Form.Control className="form_bg1" name="password" value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" autoComplete="off"/>
+                                    <Form.Control className="form_bg1" name="password" value={password} onChange={submitHandler} type="password" placeholder="Password" autoComplete="off"/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mt-4 justify-content-center align-content-center">
                                 <Col md="8" xs="10">
-                                    <Button className="button">Log In</Button>
+                                    <Button onClick={submitHandler} className="button">Log In</Button>
                                 </Col>
                             </Form.Group>
+                            <p>{err}</p>
                         </Form>
                         <NavLink className="nav-link" to="/signup">Don't have an Account? Sign up</NavLink>
                     </Col>

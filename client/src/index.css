@@ -1,13 +1,165 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+*{
+    font-family: 'Signika', sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.nav{
+  padding: 10px 50px !important;
+  justify-content: space-between !important;
+}
+
+.navbtn{
+  border: none !important;
+  background-color: transparent !important;
+  font-size: 24px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  transition: .2s ease-in;
+}
+
+.navbtn:hover {
+  background-color: black !important;
+  color: white;
+}
+
+.card1 {
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  transition: 0.5s;
+}
+
+.card1:hover {
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.card_title{
+  font-family: 'Reggae One', cursive !important;
+
+}
+
+.exit{
+  font-size: 25px;
+  transition: 0.2s ease-in-out;
+}
+
+.exit:hover {
+  transform: scale(1.05);
+  color: red;
+}
+
+.jumbo{
+  background-color: #262A47 !important;
+  color: white;
+  border-radius: 10px;
+  text-align: left;
+}
+
+.announcement{
+  text-align: left;
+  border-radius: 10px !important;
+}
+
+.announce {
+  min-height: 50px !important;
+  border-radius: 10px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.btns {
+  display: flex;
+  justify-content: space-between;
+}
+
+.signup{
+  background-color: black !important;
+  height: 100vh !important;
+}
+
+.form_bg{
+  box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px !important;
+  border-radius: 20px !important;
+}
+
+.form_bg1{
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 20px !important;
+}
+
+.inner-img {
+  transition: 0.3s;
+}
+
+.inner-img:hover {
+transform: scale(1.1);
+}
+
+.button{
+  text-decoration: none !important;
+  border:  linear-gradient(to right, rgb(102, 125, 182), rgb(0, 130, 200), rgb(0, 130, 200), rgb(102, 125, 182)) !important;
+  border-radius: 20px !important;
+  padding: 8px 35px !important;
+  background-color: transparent !important;
+  color: black !important;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+  transition: 2s ease;
+}
+.button:hover{
+  color: white !important;
+  background-image: linear-gradient(to right, rgb(102, 125, 182), rgb(0, 130, 200), rgb(0, 130, 200), rgb(102, 125, 182)) !important;
+}
+
+
+.list_item {
+  flex: 1;
+  text-align: left;
+}
+
+.list_item ul li{
+  list-style: none;
+  display: none;
+  padding: 8px 12px;
+  position: relative;
+}
+
+.list_item ul li a{
+  color: black;
+  text-decoration: none;
+}
+
+.list_item ul li::after{
+  content: '';
+  width: 0%;
+  height: 2px;
+  background: #f44336;
+  display: block;
+  margin: auto;
+  transition: 0.5s;
+}
+
+.list_item ul li:hover::after {
+  width: 100%;
+}
+
+.create{
+  font-size: 30px;
+  transition: .5s ease;
+}
+
+.create:hover{
+  cursor: pointer;
+  color: #007b83;
+  transform: scale(1.5);
+}
+
+@media screen and (max-width: 320px) {
+  .card1 {
+      width: 14rem !important;
+  }
+}
+
+@media screen and (max-width: 470px) {
+  .form-img{
+      width: 79vw;
+      height: 27vh;
+  }   
 }

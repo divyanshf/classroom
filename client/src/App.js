@@ -1,23 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import Navbar from './components/Navbar';
+import Class_Card from './components/Class_Card';
+import A_Class from './components/A_Class';
+import Classwork from './components/Classwork';
+import Members from './components/Members';
+import HomePage from './components/HomePage';
+import SignUp from './components/SignUp';
+import Signin from './components/Signin';
+import CreateAssignment from './components/CreateAssignment';
+import SubmitAssignment from './components/SubmitAssignment';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        {/* <Navbar /> */}
+        {/* <Class_Card /> */}
+        {/* <A_Class /> */}
+        {/* <Classwork /> */}
+        {/* <Members /> */}
+        {/* <HomePage /> */}
+        {/* <SignUp /> */}
+        {/* <Signin /> */}
+        {/* <CreateAssignment /> */}
+        <SubmitAssignment />
     </div>
   );
 }

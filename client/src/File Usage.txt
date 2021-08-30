@@ -1,0 +1,5 @@
+Class_Card is a particular subject card
+Navbar.js file is homepage Navbar.
+
+
+A_Class file is homepage of a selected Class_Card page.

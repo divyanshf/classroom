@@ -9,7 +9,7 @@ const assignRoutes = require('./routes/assignRoutes');
 const cookieParser = require('cookie-parser');
 
 // Set up the PORT
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 5000;
 
 // Set up the express app
 const app = express();

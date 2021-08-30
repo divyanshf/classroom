@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { User } = require('../models/User');
 
 // Time in seconds
 exports.accessExpiry = 60 * 15; //  15 minutes
@@ -54,11 +55,11 @@ exports.createRefreshToken = (user) => {
 // Generate access token using refresh token
 exports.regenerateAccessToken = async (refreshToken) => {
     if (!refreshToken) return null;
-    const dec = verifyToken(refreshToken);
+    const dec = this.verifyToken(refreshToken);
     if (!dec) return null;
     const user = await User.findById(dec.id);
     if (!user) return null;
-    return createJWT(user);
+    return this.createJWT(user);
 };
 
 // Verify a token

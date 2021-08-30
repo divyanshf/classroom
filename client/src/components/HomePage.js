@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import { UserContext } from '../context/userContext'
 import { Col, Container, Row } from 'react-bootstrap'
 import Navbar1 from './Navbar'
 import Class_Card from './Class_Card'

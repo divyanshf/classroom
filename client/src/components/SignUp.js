@@ -17,9 +17,9 @@ const SignUp = () => {
     
     const [loader, setLoader] = useState(false);
     const [err, setErr] = useState('');
-    
+
     const [user, setUser] = useContext(UserContext)
-    
+
     const onChangeHandler = (e) => {
         switch(e.target.name){
             case "name":
@@ -39,9 +39,6 @@ const SignUp = () => {
                 setRole(e.target.value)
                 break      
         }
-
-        
-
     }
 
     const submitHandler = () => {
@@ -62,33 +59,31 @@ const SignUp = () => {
                         email: res.user.email,
                         role: res.user.role
                     })
+                    console.log(user);
                 }else{
                     setErr(res.error)
                 }
             })
         }
-
     }
 
     const fetchClassPosts = async () => {
-        let res = await fetch("http://localhost:8080/auth/signup", {
+        let res = await fetch("/auth/signup", {
+            method: 'POST',
             headers : { 
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body : {
-                'name' : name,
+            body : JSON.stringify({
+                'username' : name,
                 'email' : email,
                 'password' : password,
                 'role' : role,
-            }
+            })
         });
         res = await res.json();
         return res;
     };
-
-    
-
 
     return (
         <>

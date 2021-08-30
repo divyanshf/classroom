@@ -1,7 +1,7 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import Navbar from './components/Navbar';
-import Class_Card from './components/Class_Card';
+
+// ---------Components----------------
 import A_Class from './components/A_Class';
 import Classwork from './components/Classwork';
 import Members from './components/Members';
@@ -11,19 +11,38 @@ import Signin from './components/Signin';
 import CreateAssignment from './components/CreateAssignment';
 import SubmitAssignment from './components/SubmitAssignment';
 
+// ----------Routers-------------
+import { Switch,Route } from 'react-router-dom';
+
 function App() {
   return (
     <div className="App">
-        <Navbar />
-        {/* <Class_Card />
-        <A_Class />
-        <Classwork />
-        <Members />
-        <HomePage />
-        <SignUp />
-        <Signin />
-        <CreateAssignment />
-        <SubmitAssignment /> */}
+        <Switch>
+          <Route exact path="/">
+            <HomePage />
+          </Route>
+          <Route exact path="/signup">
+            <SignUp />
+          </Route>
+          <Route exact path="/signin">
+            <Signin />
+          </Route>
+          <Route exact path="/class/:id/stream">
+            <A_Class />
+          </Route>
+          <Route exact path="/class/:id/classwork">
+            <Classwork />
+          </Route>
+          <Route exact path="/class/:id/people">
+              <Members />
+          </Route>
+          <Route exact path="/class/:id/assign/create">
+              <CreateAssignment />
+          </Route>
+          <Route exact path="/assign/:id/submit">
+              <SubmitAssignment />
+          </Route>
+        </Switch>
     </div>
   );
 }

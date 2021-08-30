@@ -2,11 +2,14 @@ import React from 'react'
 import { Col, Container, Row, ListGroup } from 'react-bootstrap'
 import Navbar2 from './Navbar2'
 import { FaUserCircle } from "react-icons/fa";
+import { useParams } from 'react-router'
 
 const Members = () => {
+    const params = useParams();
+
     return (
         <>
-            <Navbar2 />
+            <Navbar2  id={params.id}/>
             <Container className="mt-5">
                 <Row>
                     <Col className="mt-5">

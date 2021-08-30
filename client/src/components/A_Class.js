@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import { Col, Container, Row, Jumbotron, Card,Form, Button } from 'react-bootstrap'
 import Navbar2 from './Navbar2'
+import { useParams } from 'react-router'
 
 const A_Class = () => {
     const [expand,setExpand] = useState(false);
-
+    const params = useParams();
     return (
         <>
-            <Navbar2 />
+            <Navbar2 id={params.id}/>
             <Container className="mt-5">
                 <Row >
                     <Col>
@@ -15,7 +16,7 @@ const A_Class = () => {
                             <Jumbotron className="jumbo p-5 mt-4 col-md-9">
                                 <h1>Subject Name</h1>
                                 <p>Class_Code</p>
-                                <p>Meet Link</p>
+                                <p>Meet Link:  https://meet.google.com</p>
                             </Jumbotron>
                         </div>
                         <div className="d-md-flex align-items-center justify-content-center">

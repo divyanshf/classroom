@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import {Navbar,Modal,Button, Form} from 'react-bootstrap'
+import {Navbar,Modal,Button, Form,Nav} from 'react-bootstrap'
 import { AiOutlinePlus } from "react-icons/ai";
+import { NavLink } from 'react-router-dom';
 
 
 const Navbar1 = () => {
@@ -83,19 +84,24 @@ const Navbar1 = () => {
 
     return (
         <Navbar bg="light" className="nav" fixed="top">
-            <Navbar.Brand href="#">Classroom</Navbar.Brand>
-            {/* For Students */}
-            <button className="navbtn" onClick={() => setModalShow(true)}><AiOutlinePlus style={{fontSize:"20px"}} /></button>
-            <MyVerticallyCenteredModal
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-            />
-            {/* For Admin */}
-            <button className="navbtn" onClick={() => setModalShow1(true)}><AiOutlinePlus style={{fontSize:"20px"}} /></button>
-            <MyModal
-                show={modalShow1}
-                onHide={() => setModalShow1(false)}
-            />
+            <NavLink to="/" className="nav-link" style={{color:"black", fontSize:"20px"}}>Classroom</NavLink>
+            <Nav>
+                {/* For Students */}
+                <button className="navbtn" onClick={() => setModalShow(true)}><AiOutlinePlus style={{fontSize:"20px"}} /></button>
+                <MyVerticallyCenteredModal
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                />
+                {/* For Admin */}
+                <button className="navbtn" onClick={() => setModalShow1(true)}><AiOutlinePlus style={{fontSize:"20px"}} /></button>
+                <MyModal
+                    show={modalShow1}
+                    onHide={() => setModalShow1(false)}
+                />
+                <NavLink className="nav-link" style={{cursor:"pointer"}} to="/signin">SignIn</NavLink>
+                <NavLink className="nav-link" style={{cursor:"pointer"}} to="/signup">SignUp</NavLink>
+                <NavLink className="nav-link" style={{cursor:"pointer"}} to="/3">Logout</NavLink>
+            </Nav>
         </Navbar>
     )
 }

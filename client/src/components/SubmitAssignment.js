@@ -48,7 +48,7 @@ const SubmitAssignment = () => {
                                 <label className="custom-control-label" for="customRadio1">Option 4</label>
                             </div>
                         </div>
-                        <div className="row justify-content-center align-content-center mb-3 mt-5">
+                        {/* <div className="row justify-content-center align-content-center mb-3 mt-5">
                             <div className="col-md-10">
                                 <p>Question 2</p>
                             </div>
@@ -74,7 +74,7 @@ const SubmitAssignment = () => {
                                 <input type="radio" id="customRadio4" name="question2" value="Option 4" onChange={(e)=> onChange(1,e)} className="custom-control-input m-3" />
                                 <label className="custom-control-label" for="customRadio1">Option 4</label>
                             </div>
-                        </div>
+                        </div> */}
                     </form>
                     <button className="col-md-2 btn btn-outline-success mt-2 form_bg">
                         Submit

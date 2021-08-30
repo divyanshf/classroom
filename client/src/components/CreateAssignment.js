@@ -113,7 +113,7 @@ const CreateAssignment = () => {
     };
     return (
         <>
-            <Navbar2/>
+            {/* <Navbar2/> */}
             <div className="p-5">
                 <div className="container col-12 col-md-9 mt-5 p-5 bg-white form_bg">
                     <h3>Create the Assignment</h3>

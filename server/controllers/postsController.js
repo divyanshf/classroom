@@ -1,16 +1,10 @@
-const mongoose = require('mongoose');
-const { Class } = require('../models/Class');
 const { Post } = require('../models/Post');
 
 // Get all posts from a class
 exports.getPostFromClass = async (req, res) => {
     try {
-        const cls = await Class.findById(req.params.id);
-        if (!cls) throw 'Class unavailable';
         const posts = await Post.find({
-            _id: {
-                $in: cls.posts.map((id) => mongoose.Types.ObjectId(id)),
-            },
+            classID: req.params.id,
         }).sort({ updatedAt: -1 });
         res.json({ posts });
         return;
@@ -23,15 +17,13 @@ exports.getPostFromClass = async (req, res) => {
 exports.addPostToClass = async (req, res) => {
     const user = req.user;
     try {
-        const cls = await Class.findById(req.params.id);
-        if (!cls) throw 'Class unavailable';
         const newPost = new Post({
             title: req.body.title,
             content: req.body.content,
             author: user._id,
+            classID: req.params.id,
         });
-        const newId = await newPost.save();
-        await Class.updateOne({ _id: cls._id }, { $push: { posts: newId } });
+        await newPost.save();
         res.json({ success: 'Post created successfully' });
     } catch (e) {
         res.json({ error: e || 'Something went wrong' });

@@ -59,8 +59,24 @@ router.post(
     assignController.addAssignment
 );
 
-/* JOIN A CLASS */
+/* JOIN/LEAVE CLASS */
 // Join a classroom
 router.post('/join/:id', authController.isStudent, classController.joinUser);
+
+// Unenroll from a class
+router.post(
+    '/unenroll/:id',
+    authController.isStudent,
+    authController.isMember,
+    classController.unenroll
+);
+
+// Remove a class
+router.delete(
+    '/:id',
+    authController.isTeacher,
+    authController.isMember,
+    classController.removeClass
+);
 
 module.exports = router;

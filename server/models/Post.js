@@ -17,6 +17,11 @@ const PostSchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
+        classID: {
+            // Referenced class
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Class',
+        },
     },
     { timestamps: true }
 );

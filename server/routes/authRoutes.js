@@ -9,7 +9,7 @@ router.post('/signup', authController.signup);
 router.post('/signin', authController.signin);
 
 // Logout route
-router.post('/logout', authController.logout);
+router.get('/logout', authController.logout);
 
 // Google stuff
 router.get('/google/login', googleController.login);

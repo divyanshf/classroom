@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import Navbar2 from './Navbar2';
-
+import { ImCross } from "react-icons/im";
 
 const CreateAssignment = () => {
     const [form, setForm] = useState([]);
@@ -12,7 +12,7 @@ const CreateAssignment = () => {
         }
 
         const someEmpty = form.some(
-        (item) => item.Correct === "" ||item.Option1 === "" ||item.Option2 === "" ||item.Option3 === "" ||item.Option4 === "" || item.Question === ""|| item.Points === ""
+        (item) => item.Correct === "" || item.Correct === "Select the Correct Option" ||item.Option1 === "" ||item.Option2 === "" ||item.Option3 === "" ||item.Option4 === "" || item.Question === ""|| item.Points === ""
         );
 
         if (someEmpty) {
@@ -41,6 +41,9 @@ const CreateAssignment = () => {
             allPrev[index].errors.Option4 = "Option4 is required";
             }
             if (form[index].Correct === "") {
+            allPrev[index].errors.Correct = "Correct Option is required";
+            }
+            if (form[index].Correct === "Select the Correct Option") {
             allPrev[index].errors.Correct = "Correct Option is required";
             }
             setForm(allPrev);
@@ -114,7 +117,7 @@ const CreateAssignment = () => {
             <div className="p-5">
                 <div className="container col-12 col-md-9 mt-5 p-5 bg-white form_bg">
                     <h3>Create the Assignment</h3>
-                    {/* {JSON.stringify(form)} */}
+                    {JSON.stringify(form)}
             
                     <form>
                         {form.map((item, index) => (
@@ -124,7 +127,7 @@ const CreateAssignment = () => {
                                         onClick={(e) => handleRemoveField(e, index)}
                                         style={{textAlign:"right"}}
                                     >
-                                    X
+                                    <ImCross />
                                 </button>
                                 <div className="row justify-content-center align-content-center mb-3">
                                     <div className="col-12 col-md-5">
@@ -247,8 +250,23 @@ const CreateAssignment = () => {
                                     </div>
                                 </div>
                                 <div className="row justify-content-center align-content-center mb-3">
-                                    <div className="col-md-10">
-                                        <input
+                                    <div className="col-12 col-md-5 p-2">                            
+                                        <select name="Correct" value={item.Correct} onChange={(e)=> onChange(index,e)} className={
+                                                item.errors.Correct
+                                                ? "form-control  is-invalid form_bg custom-select"
+                                                : "form-control form_bg custom-select"
+                                            }>
+                                            <option value={Option}>Select the Correct Option</option>
+                                            <option value={item.Option1}>{item.Option1}</option>
+                                            <option value={item.Option2}>{item.Option2}</option>
+                                            <option value={item.Option3}>{item.Option3}</option>
+                                            <option value={item.Option4}>{item.Option4}</option>
+                                        </select>
+                                        {item.errors.Correct && (
+                                        <div className="invalid-feedback">{item.errors.Correct}</div>
+                                        )}
+                                    </div>
+                                        {/* <input
                                         type="text"
                                         className={
                                             item.errors.Correct
@@ -259,11 +277,7 @@ const CreateAssignment = () => {
                                         placeholder="Correct Answer"
                                         value={item.Correct}
                                         onChange={(e) => onChange(index,e)}
-                                        />
-                                        {item.errors.Correct && (
-                                        <div className="invalid-feedback">{item.errors.Correct}</div>
-                                        )}
-                                    </div>
+                                        /> */}
                                 </div>
                             </div>
                         ))}

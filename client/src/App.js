@@ -14,16 +14,16 @@ import SubmitAssignment from './components/SubmitAssignment';
 function App() {
   return (
     <div className="App">
-        {/* <Navbar /> */}
-        {/* <Class_Card /> */}
-        {/* <A_Class /> */}
-        {/* <Classwork /> */}
-        {/* <Members /> */}
-        {/* <HomePage /> */}
-        {/* <SignUp /> */}
-        {/* <Signin /> */}
-        {/* <CreateAssignment /> */}
-        <SubmitAssignment />
+        <Navbar />
+        {/* <Class_Card />
+        <A_Class />
+        <Classwork />
+        <Members />
+        <HomePage />
+        <SignUp />
+        <Signin />
+        <CreateAssignment />
+        <SubmitAssignment /> */}
     </div>
   );
 }

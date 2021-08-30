@@ -19,7 +19,7 @@ const A_Class = () => {
                             </Jumbotron>
                         </div>
                         <div className="d-md-flex align-items-center justify-content-center">
-                            <Jumbotron className="mt-4 announce col-sm-12 col-md-7">
+                            <Jumbotron className="mt-4 announce col-sm-12 col-md-7" style={{cursor:"pointer"}}>
                                 {expand ? 
                                     <div className="p-4">
                                         <Form>
@@ -49,13 +49,6 @@ const A_Class = () => {
                                         Message by the Professor
                                     </Card.Text>
                                 </Card.Body>
-                                <Card.Footer style={{backgroundColor:"transparent"}}>
-                                    <Form>
-                                        <Form.Group>
-                                            <Form.Control as="textarea" rows={1} placeholder="Add Class Comment" style={{borderRadius:"20px"}} />
-                                        </Form.Group>
-                                    </Form>
-                                </Card.Footer>
                             </Card>
                         </div>
                     </Col>

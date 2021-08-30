@@ -61,10 +61,10 @@ router.post(
 
 /* JOIN/LEAVE CLASS */
 // Join a classroom
-router.post('/join/:id', authController.isStudent, classController.joinUser);
+router.patch('/join/:id', authController.isStudent, classController.joinUser);
 
 // Unenroll from a class
-router.post(
+router.patch(
     '/unenroll/:id',
     authController.isStudent,
     authController.isMember,

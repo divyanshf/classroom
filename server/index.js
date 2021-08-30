@@ -25,7 +25,7 @@ app.use('/assign', assignRoutes);
 // Set up cors
 app.use(
     cors({
-        origin: 'http://localhost:3000',
+        origin: process.env.DOMAIN,
         optionsSuccessStatus: 200,
     })
 );

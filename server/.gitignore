@@ -70,6 +70,7 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variables file
+/google.json
 .env
 .env.test
 .env.development

@@ -1,4 +1,7 @@
+const mongoose = require('mongoose');
+const { Assign } = require('../models/Assign');
 const { Class } = require('../models/Class');
+const { Post } = require('../models/Post');
 const { Role } = require('../models/Role');
 
 // Get all classes with the respective user and role
@@ -38,6 +41,7 @@ exports.addClass = async (req, res) => {
     try {
         const newClass = new Class({
             title: req.body.title,
+            subjectCode: req.body.subjectCode,
             books: req.body.books,
             link: req.body.link,
             admin: user._id,
@@ -57,6 +61,7 @@ exports.updateClass = async (req, res) => {
         if (!cls) throw 'Class unavailable';
         await Class.findByIdAndUpdate(req.params.id, {
             title: req.body.title || cls.title,
+            subjectCode: req.body.subjectCode || cls.subjectCode,
             books: req.body.books || cls.books,
             link: req.body.link || cls.link,
             students: req.body.students || cls.students,
@@ -74,15 +79,49 @@ exports.joinUser = async (req, res) => {
     try {
         const cls = await Class.findById(req.params.id);
         if (!cls) throw 'Class unavailable';
-        if (user.email in cls.students.map((stud) => stud.user)) {
+        if (
+            cls.students.filter((stud) => stud.user === user.email).length > 0
+        ) {
             res.json({ error: 'Already a student of the class' });
             return;
         }
         await Class.updateOne(
             { _id: cls._id },
-            { $push: { students: user.email } }
+            { $push: { students: { user: user.email } } }
         );
         res.json({ success: 'Student added to the class' });
+    } catch (e) {
+        res.json({ error: e || 'Something went wrong!' });
+    }
+};
+
+// Unenroll from a class by class code
+exports.unenroll = async (req, res) => {
+    const user = req.user;
+    try {
+        const cls = await Class.findById(req.params.id);
+        if (!cls) throw 'Class unavailable';
+        await Class.updateOne(
+            { _id: cls._id },
+            { $pull: { students: { user: user.email } } }
+        );
+        res.json({ success: 'Student unenrolled from the class' });
+    } catch (e) {
+        res.json({ error: e || 'Something went wrong!' });
+    }
+};
+
+// Delete a class
+exports.removeClass = async (req, res) => {
+    try {
+        await Assign.deleteMany({
+            classID: mongoose.Types.ObjectId(req.params.id),
+        });
+        await Post.deleteMany({
+            classID: mongoose.Types.ObjectId(req.params.id),
+        });
+        await Class.findByIdAndDelete(req.params.id);
+        res.json({ success: 'Removed the class successfully' });
     } catch (e) {
         res.json({ error: e || 'Something went wrong!' });
     }

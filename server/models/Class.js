@@ -7,6 +7,7 @@ const ClassSchema = mongoose.Schema(
             type: String,
             require: true,
         },
+        subjectCode: { type: String },
         books: [{ type: String }], //  Recommended books by admin
         link: {
             //  link to the video room
@@ -18,7 +19,7 @@ const ClassSchema = mongoose.Schema(
             ref: 'User',
             require: true,
         },
-        posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }], // All the posts of the class
+        // posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }], // All the posts of the class
         students: [
             {
                 user: { type: String, ref: 'User' },

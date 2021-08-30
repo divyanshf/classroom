@@ -61,7 +61,7 @@
 
 ### LOGOUT
 
--   Type : POST
+-   Type : GET
 -   Path : /auth/logout </br>
 -   Response:
 
@@ -224,7 +224,7 @@
 
 ### JOIN AN EXISTING CLASS
 
--   Type : POST
+-   Type : PATCH
 -   Path : /class/join/:id </br>
 -   Response :
 
@@ -236,7 +236,7 @@
 
 ### UNENROLL FROM AN EXISTING CLASS
 
--   Type : POST
+-   Type : PATCH
 -   Path : /class/unenroll/:id </br>
 -   Response :
 
@@ -300,7 +300,7 @@
 
 ### UPDATE A POST IN A CLASS
 
--   Type : POST
+-   Type : PATCH
 -   Path : /posts/:id </br>
 -   Request :
 

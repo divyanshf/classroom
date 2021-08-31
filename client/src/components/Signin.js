@@ -46,6 +46,7 @@ const Signin = () => {
                         email: res.user.email,
                         role: res.user.role
                     })
+                    
                     console.log(user);
                 }else{
                     setErr(res.error)

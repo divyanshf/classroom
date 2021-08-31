@@ -14,11 +14,17 @@ exports.setCookies = (res, user) => {
             maxAge: this.accessExpiry * 1000,
             // secure: true,
         });
+        res.cookie('user', user, {
+            httpOnly: false,
+            maxAge: JWT.accessExpiry * 1000,
+            // secure: true,
+        });
         res.cookie('refresh', refreshToken, {
             httpOnly: true,
             maxAge: this.refreshExpiry * 1000,
             // secure: true,
         });
+
         return null;
     } catch (e) {
         return e;

@@ -1,12 +1,40 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container, Row, Col, ListGroup, Button } from 'react-bootstrap'
 import Navbar2 from './Navbar2'
 import { MdAssignment, MdAssignmentInd,MdCreateNewFolder } from "react-icons/md";
 import { useParams } from 'react-router'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 const Classwork = () => {
+    const [assigns, setAssigns] = useState([]);
     const params = useParams();
+
+    const fetchAssigns = async () => {
+        try {
+            let res = await fetch(`/class/${params.id}/assign`);
+            res = await res.json();
+            if (res.assigns) return res;
+            throw res.error
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+
+    const renderEmpty = () => {
+        return (
+            <div>
+                <p> No assignments available </p>
+            </div>
+        );
+    }
+
+    useEffect(() => {
+        fetchAssigns().then(res => {
+            setAssigns(res.assigns);
+        });
+    }, [])
+
     return (
         <>
             <Navbar2  id={params.id} />
@@ -17,30 +45,17 @@ const Classwork = () => {
                         <NavLink to={`/class/${params.id}/assign/create`} className="nav-link" style={{color:"black"}}><MdCreateNewFolder className="create"/></NavLink>
                         <div className="d-md-flex justify-content-center align-items-center">
                             <ListGroup variant="flush"  className="mt-5 col-md-7">
-                                <NavLink to={`/assign/${1}/submit`} className="mb-3"  style={{color:"black", border:"none", textDecoration:"none"}}>
-                                    <ListGroup.Item>
-                                        <div className="d-flex justify-content-between">
-                                            <div><MdAssignment style={{fontSize:"20px", marginRight:"10px"}}/> Assignment Name</div>
-                                            <div>Due Date</div>
-                                        </div>
-                                    </ListGroup.Item>
-                                </NavLink>
-                                <NavLink to={`/assign/${1}/submit`} className="mb-3"  style={{color:"black", border:"none", textDecoration:"none"}}>
-                                    <ListGroup.Item>
-                                        <div className="d-flex justify-content-between">
-                                            <div><MdAssignment style={{fontSize:"20px", marginRight:"10px"}}/> Assignment Name</div>
-                                            <div>Due Date</div>
-                                        </div>
-                                    </ListGroup.Item>
-                                </NavLink>
-                                <NavLink to={`/assign/${1}/submit`} className="mb-3"  style={{color:"black", border:"none", textDecoration:"none"}}>
-                                    <ListGroup.Item>
-                                        <div className="d-flex justify-content-between">
-                                            <div><MdAssignment style={{fontSize:"20px", marginRight:"10px"}}/> Assignment Name</div>
-                                            <div>Due Date</div>
-                                        </div>
-                                    </ListGroup.Item>
-                                </NavLink>
+                                {assigns.length === 0 ? renderEmpty() : null}
+                                {assigns.map((ass, index) =>
+                                    <NavLink key={index} to={`/assign/${ass._id}/submit`} className="mb-3" style={{ color: "black", border: "none", textDecoration: "none" }}>
+                                        <ListGroup.Item>
+                                            <div className="d-flex justify-content-between">
+                                                <div><MdAssignment style={{fontSize:"20px", marginRight:"10px"}}/> {ass.title}</div>
+                                                <div>{ass.due}</div>
+                                            </div>
+                                        </ListGroup.Item>
+                                    </NavLink>
+                                )}
                             </ListGroup>
                         </div>
                     </Col>

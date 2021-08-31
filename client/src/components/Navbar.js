@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import {Navbar,Modal,Button, Form,Nav} from 'react-bootstrap'
 import { AiOutlinePlus } from "react-icons/ai";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 
 
 const Navbar1 = () => {
     const [modalShow, setModalShow] = useState(false);
   const [modalShow1, setModalShow1] = useState(false);
+  const hist = useHistory();
   
     function MyVerticallyCenteredModal(props) {
       const [code, setCode] = useState('');
@@ -18,10 +19,11 @@ const Navbar1 = () => {
         }})
         res = await res.json();
         if (res.error) {
-          setError(res.error)
+          setError(res.error);
         }
         else {
           props.onHide();
+          window.location.reload();
         }
       }
 
@@ -83,6 +85,7 @@ const Navbar1 = () => {
         }
         else {
           props.onHide();
+          window.location.reload();
         }
       }
 

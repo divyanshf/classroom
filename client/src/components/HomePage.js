@@ -33,7 +33,7 @@ const HomePage = () => {
             res = await res.json();
             if (!res.error) {
                 setClasses(prev => {
-                    return prev.filter(cls => cls.id !== id);
+                    return prev.filter(cls => cls._id !== id);
                 })
                 return;
             }
@@ -48,9 +48,6 @@ const HomePage = () => {
             setClasses(res.classes);
         });
     }, []);
-
-    useEffect(() => {
-    }, [classes])
 
     const renderEmpty = () => {
         return (

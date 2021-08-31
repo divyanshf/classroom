@@ -1,10 +1,67 @@
 import React, {useState} from 'react'
 import Navbar2 from './Navbar2';
 import { ImCross } from "react-icons/im";
+import { useHistory, useParams } from 'react-router-dom';
+
 
 const CreateAssignment = () => {
     const [form, setForm] = useState([]);
     const [dealine,setDeadline] = useState('');
+    const [title, setTitle] = useState('');
+    const [err, setErr] = useState('');
+    const hist = useHistory();
+
+    const params = useParams();
+
+    const submitHandler = () => {
+
+        let Question = [];
+
+        form.forEach(ele=>{
+            let tempQuestion = {
+                question: ele.Question,
+                options: [ele.Option1, ele.Option2, ele.Option3, ele.Option4],
+                correct: ele.Correct,
+                points: ele.Points
+            }
+            Question.push(tempQuestion)
+        })
+
+        let sendQuestionData = {
+            title: title,
+            questions: Question,
+            due: dealine,
+        }
+
+        console.log(sendQuestionData, params)
+
+        if(!sendQuestionData.due || !sendQuestionData.title || !sendQuestionData.questions ){
+            //empty field
+            setErr("Empty field!")
+        }
+        else{
+            fetchClassPosts(sendQuestionData).then(res => {
+                if(!res.error){
+                    hist.replace(`/class/${params.id}/assign`);
+                }else{
+                    setErr(res.error || 'Something')
+                }
+            })
+        }
+    }
+
+    const fetchClassPosts = async (sendQuestionData) => {
+        let res = await fetch(`/class/${params.id}/assign`, {
+            method: 'POST',
+            headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body : JSON.stringify(sendQuestionData)
+        });
+        res = await res.json();
+        return res;
+    };
 
     const prevIsValid = () => {
         if (form.length === 0) {
@@ -117,9 +174,14 @@ const CreateAssignment = () => {
             <div className="p-5">
                 <div className="container col-12 col-md-9 mt-5 p-5 bg-white form_bg">
                     <h3>Create the Assignment</h3>
-                    {JSON.stringify(form)}
-            
+                    {/* {JSON.stringify(form)} */}
                     <form>
+                        
+                        <div className="row justify-content-center align-content-center mb-3">
+                            <div className="col-md-5"> 
+                                <input type="text" placeholder="Title" className="form_bg mt-4" onChange={(e)=>setTitle(e.target.value)} name="title" value={title} style={{outline: "none", padding: "8px", borderRadius: "20px"}}></input>
+                            </div>
+                        </div>
                         {form.map((item, index) => (
                             <div className="row mt-3" key={`item-${index}`}>
                                 <button
@@ -298,9 +360,10 @@ const CreateAssignment = () => {
                             />
                         </div>
                     </div>
-                    <button className="btn btn-outline-success mt-2 form_bg">
+                    <button onClick={submitHandler} className="btn btn-outline-success mt-2 form_bg">
                         Post the Assignment
                     </button>
+                    <p className="mt-3 danger">{err}</p>
                 </div>
             </div>
         </>

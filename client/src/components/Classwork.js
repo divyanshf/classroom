@@ -8,6 +8,14 @@ import { NavLink, useLocation } from 'react-router-dom';
 const Classwork = () => {
     const [assigns, setAssigns] = useState([]);
     const params = useParams();
+    const [user, setUser] = useState({
+        _id: '',
+        email: '',
+        username: '',
+        role:''
+    });
+
+
 
     const fetchAssigns = async () => {
         try {
@@ -30,6 +38,23 @@ const Classwork = () => {
     }
 
     useEffect(() => {
+        const cookies = document.cookie.split(';');
+        cookies.forEach(cookie => {
+            let cook = decodeURI(cookie);
+            cook = cook.split('=').map(c => c.trim());
+            if (cook[0] === 'user') {
+                const temp = JSON.parse(decodeURIComponent(cook[1]));
+                setUser(() => {
+                    return {
+                        _id: temp._id,
+                        email: temp.email,
+                        username: temp.username,
+                        role:temp.role
+                    }
+                });
+            }
+        })
+
         fetchAssigns().then(res => {
             setAssigns(res.assigns);
         });
@@ -42,7 +67,7 @@ const Classwork = () => {
                 <Row>
                     <Col className="mt-5">
                         <h3><MdAssignmentInd style={{fontSize:"30px", marginRight:"10px"}} />View Your Work</h3>
-                        <NavLink to={`/class/${params.id}/assign/create`} className="nav-link" style={{color:"black"}}><MdCreateNewFolder className="create"/></NavLink>
+                        {user.role === "Teacher" && <NavLink to={`/class/${params.id}/assign/create`} className="nav-link" style={{color:"black"}}><MdCreateNewFolder className="create"/></NavLink>}
                         <div className="d-md-flex justify-content-center align-items-center">
                             <ListGroup variant="flush"  className="mt-5 col-md-7">
                                 {assigns.length === 0 ? renderEmpty() : null}

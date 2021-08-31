@@ -46,6 +46,7 @@ const Signin = () => {
                         email: res.user.email,
                         role: res.user.role
                     })
+                    console.log(user);
                 }else{
                     setErr(res.error)
                 }
@@ -55,15 +56,16 @@ const Signin = () => {
     }
 
     const fetchClassPosts = async () => {
-        let res = await fetch("http://localhost:8080/auth/signin", {
+        let res = await fetch("/auth/signin", {
+            method: 'POST',
             headers : { 
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body : {
+            body : JSON.stringify({
                 'email': email,
                 'password': password,
-            }
+            })
         });
         res = await res.json();
         return res;

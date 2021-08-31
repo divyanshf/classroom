@@ -1,11 +1,25 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Col, Container, Row, Jumbotron, Card,Form, Button } from 'react-bootstrap'
 import Navbar2 from './Navbar2'
 import { useParams } from 'react-router'
 
 const A_Class = () => {
     const [expand,setExpand] = useState(false);
+    const [posts, setPosts] = useState([]);
     const params = useParams();
+
+    useEffect(() => {
+        const fetchCls = async () => {
+            let res = await fetch(`/class/${params.id}/posts`);
+            res = res.json();
+            return res;
+        };
+
+        fetchCls().then(res => {
+            setPosts(res.posts)
+        });
+    }, [])
+
     return (
         <>
             <Navbar2 id={params.id}/>
@@ -39,19 +53,23 @@ const A_Class = () => {
                                 }
                             </Jumbotron>
                         </div>
-                        <div className="d-md-flex align-items-center justify-content-center">
-                            <Card className="mt-4 announcement col-sm-12 col-md-7">
-                                <Card.Body className="p-4">
-                                    <Card.Title>
-                                        Professor Name<br/>
-                                        <p>date</p>
-                                    </Card.Title>
-                                    <Card.Text>
-                                        Message by the Professor
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </div>
+                            {posts.forEach(p => {
+                                return (
+                                <div className="d-md-flex align-items-center justify-content-center">
+                                    <Card className="mt-4 announcement col-sm-12 col-md-7">
+                                        <Card.Body className="p-4">
+                                            <Card.Title>
+                                                <p> {p.title} </p>
+                                                <p> {p.updateAt} </p>
+                                            </Card.Title>
+                                            <Card.Text>
+                                                {p.content}
+                                            </Card.Text>
+                                        </Card.Body>
+                                    </Card>
+                                </div>
+                                );
+                            })}
                     </Col>
                 </Row>
             </Container>

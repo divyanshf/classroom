@@ -13,9 +13,15 @@ const PostSchema = mongoose.Schema(
             require: true,
         },
         author: {
-            //  Author of the post
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
+            user: {
+                //  Author of the post
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+            },
+            name: {
+                type: String,
+                require: true,
+            },
         },
         classID: {
             // Referenced class

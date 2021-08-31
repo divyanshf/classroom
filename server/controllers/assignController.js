@@ -22,7 +22,7 @@ exports.getAssignmentById = async (req, res) => {
         if (!assign) throw "Assignment doesn't exist";
         const cls = await Class.findById(assign.classID);
         if (
-            cls.admin.toString() === user._id ||
+            cls.admin.user.toString() === user._id ||
             cls.students.filter((stud) => stud.user === user.email).length > 0
         ) {
             res.json({ assign });
@@ -60,7 +60,7 @@ exports.updateAssignment = async (req, res) => {
         const assign = await Assign.findById(req.params.id);
         if (!assign) throw "Assignment doesn't exist";
         const cls = await Class.findById(assign.classID);
-        if (cls.admin.toString() === user._id) {
+        if (cls.admin.user.toString() === user._id) {
             await Assign.findByIdAndUpdate(req.params.id, {
                 $set: {
                     title: req.body.title || assign.title,

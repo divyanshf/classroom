@@ -95,7 +95,7 @@ exports.isMember = async (req, res, next) => {
         const cls = await Class.findById(req.params.id);
         if (!cls) throw 'Class unavailable';
         if (
-            cls.admin.toString() === user._id ||
+            cls.admin.user.toString() === user._id ||
             cls.students.filter((stud) => stud.user === user.email).length > 0
         ) {
             next();

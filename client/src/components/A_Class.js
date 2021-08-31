@@ -1,36 +1,101 @@
 import React, { useState, useEffect } from 'react'
 import { Col, Container, Row, Jumbotron, Card,Form, Button } from 'react-bootstrap'
 import Navbar2 from './Navbar2'
-import { useParams } from 'react-router'
+import {Link, useParams} from 'react-router-dom'
 
 const A_Class = () => {
-    const [expand,setExpand] = useState(false);
+    const [details, setDetails] = useState({
+        id:'',
+        ClassCode: '',
+        admin: '',
+        classname: '',
+        link:''
+    });
+    const [expand, setExpand] = useState(false);
+    const [announce, setAnnounce] = useState('');
+    const [error, setError] = useState('');
     const [posts, setPosts] = useState([]);
+
     const params = useParams();
 
-    useEffect(() => {
         const fetchCls = async () => {
-            let res = await fetch(`/class/${params.id}/posts`);
-            res = res.json();
-            return res;
-        };
+            try {
+                let res = await fetch(`/class/${params.id}`, {
+                });
+                res = await res.json();
+                if (res.error) {
+                    setError(res.error);
+                }
+                else return res;
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        const fetchPosts = async () => {
+            try {
+                let res = await fetch(`/class/${params.id}/posts`);
+                res = await res.json();
+                if (res.error) {
+                    setError(res.error);
+                }
+                else return res;
+            } catch (e) {
+                console.log(e);
+            }
+    };
+    
+    useEffect(() => {
+
+        fetchPosts().then(res => {
+            if(res.posts)
+                setPosts(res.posts)
+        });
 
         fetchCls().then(res => {
-            setPosts(res.posts)
-        });
+            setDetails(() => {
+                return {
+                    id:res.class._id,
+                    ClassCode: res.class.subjectCode,
+                    admin: res.class.admin.name,
+                    classname: res.class.title,
+                    link:res.class.link
+                }
+            });
+        })
     }, [])
+
+    const submitPost = async () => {
+        try {
+            let res = await fetch(`/class/${details.id}/posts`, {
+                method: 'POST',
+                body: JSON.stringify({title:'',content: announce}),
+                headers: {
+                    'Content-Type':'application/json'
+                }
+            })
+            res = await res.json();
+            if (res.error) {
+                setError(res.error);
+            }
+            else {
+                setError(res.success);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     return (
         <>
-            <Navbar2 id={params.id}/>
+            <Navbar2 id={details.id}/>
             <Container className="mt-5">
                 <Row >
                     <Col>
                         <div className="d-md-flex align-items-center justify-content-center">
                             <Jumbotron className="jumbo p-5 mt-4 col-md-9">
-                                <h1>Subject Name</h1>
-                                <p>Class_Code</p>
-                                <p>Meet Link:  https://meet.google.com</p>
+                                <h1>{details.classname}</h1>
+                                <p>{details.ClassCode}</p>
+                                <p>Meet Link: <a href={details.link}>{details.link}</a> </p>
                             </Jumbotron>
                         </div>
                         <div className="d-md-flex align-items-center justify-content-center">
@@ -39,12 +104,13 @@ const A_Class = () => {
                                     <div className="p-4">
                                         <Form>
                                             <Form.Group>
-                                                <Form.Control as="textarea" rows={1} placeholder="Announce something to the class" style={{borderRadius:"20px"}} />
+                                                <Form.Control as="textarea" rows={1} placeholder="Announce something to the class" style={{borderRadius:"20px"}} name='announce' value={announce} onChange={(e)=>{setAnnounce(e.target.value)}} />
                                             </Form.Group>
                                         </Form>
                                         <div className="mt-3 btns">
-                                            <Button variant="outline-danger" className="btn-sm" onClick={()=>{setExpand(false)}} >Cancel</Button>
-                                            <Button variant="outline-success" className="btn-sm">Submit</Button>
+                                            <Button variant="outline-danger" className="btn-sm" onClick={() => { setExpand(false) }} >Cancel</Button>
+                                            <p> {error} </p>
+                                            <Button variant="outline-success" className="btn-sm" onClick={submitPost}>Submit</Button>
                                         </div>
                                     </div>
                                     :
@@ -53,14 +119,14 @@ const A_Class = () => {
                                 }
                             </Jumbotron>
                         </div>
-                            {posts.forEach(p => {
+                        {posts.map((p, index) => {
                                 return (
-                                <div className="d-md-flex align-items-center justify-content-center">
+                                <div key={index} className="d-md-flex align-items-center justify-content-center">
                                     <Card className="mt-4 announcement col-sm-12 col-md-7">
                                         <Card.Body className="p-4">
                                             <Card.Title>
-                                                <p> {p.title} </p>
-                                                <p> {p.updateAt} </p>
+                                                <p> {p.author.name} </p>
+                                                <p> {p.updatedAt} </p>
                                             </Card.Title>
                                             <Card.Text>
                                                 {p.content}

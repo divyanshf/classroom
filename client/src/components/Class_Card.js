@@ -2,6 +2,7 @@ import React from 'react'
 import { Card, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { MdExitToApp } from "react-icons/md";
 import { NavLink } from 'react-router-dom';
+import {Link} from 'react-router-dom'
 // MdExitToApp
 
 const Class_Card = (props) => {

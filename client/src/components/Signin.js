@@ -1,5 +1,5 @@
 import React,{ useState, useContext } from 'react'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { Col, Container, Row,Form,Button, Media, Image,Spinner } from 'react-bootstrap'
 import { MdAccountBox, MdEmail, MdLock } from "react-icons/md";
 
@@ -16,7 +16,8 @@ const Signin = () => {
 
     const [loader, setLoader] = useState(false);
 
-    const [user, setUser] = useContext(UserContext) 
+    const [user, setUser] = useContext(UserContext)
+    const hist = useHistory();
 
     const onChangeHandler = (e) => {
         switch(e.target.name){
@@ -45,8 +46,8 @@ const Signin = () => {
                         username: res.user.username,
                         email: res.user.email,
                         role: res.user.role
-                    })
-                    console.log(user);
+                    });
+                    hist.push('/');
                 }else{
                     setErr(res.error)
                 }

@@ -94,15 +94,10 @@ exports.submitSol = async (req, res) => {
             cls.students.filter((stud) => stud.user === user.email).length > 0
         ) {
             const subs = req.body.subs;
-            const points = assign.questions.reduce(
-                (points, question, index) => {
-                    return (
-                        points +
-                        (subs[index] === question.correct ? question.points : 0)
-                    );
-                },
-                0
-            );
+            const points = 0;
+            for (const [key, value] of Object.entries(subs)) {
+                if (assign.questions[key].correct === value) points += assign.questions[key].points;
+            }
             await Assign.findByIdAndUpdate(req.params.id, {
                 $push: {
                     submissions: {

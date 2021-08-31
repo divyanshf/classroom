@@ -35,6 +35,20 @@ const Navbar1 = () => {
         })
   }, [])
 
+  const logout = async () => {
+    try {
+      let res = await fetch('/auth/logout');
+      console.log(res);
+      res = await res.json();
+      console.log(res);
+      if (res.success)
+        window.location.reload();
+      else throw res.error;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
     function MyVerticallyCenteredModal(props) {
       const [code, setCode] = useState('');
       const [error, setError] = useState('');
@@ -160,7 +174,7 @@ const Navbar1 = () => {
                 <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} />
                 <MyModal show={modalShow1} onHide={() => setModalShow1(false)} />
                 
-          {user._id ? <button className="btn btn-danger" style={{cursor:"pointer"}}>Logout</button> : <NavLink className="nav-link" style={{cursor:"pointer"}} to="/signin">Login</NavLink>}
+          {user._id ? <button className="btn btn-danger" onClick={()=>{logout()}} style={{cursor:"pointer"}}>Logout</button> : <NavLink className="nav-link" style={{cursor:"pointer"}} to="/signin">Login</NavLink>}
                 
             </Nav>
         </Navbar>

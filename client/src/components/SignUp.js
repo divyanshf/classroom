@@ -61,7 +61,7 @@ const SignUp = () => {
                     })
                     hist.push('/')
                 }else{
-                    setErr(res.error)
+                    setErr(res.error || 'Something')
                 }
             })
         }

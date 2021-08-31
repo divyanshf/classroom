@@ -13,6 +13,20 @@ const Class_Card = (props) => {
         </Tooltip>
     );
 
+    const renderUnenroll = () => {
+        return (
+            <Card.Footer style={{textAlign:'center'}}>
+                            <OverlayTrigger
+                                placement="right"
+                                delay={{ show: 250, hide: 400 }}
+                            overlay={renderTooltip}
+                            >
+                                <MdExitToApp onClick={() => {props.unenroll(props.id)}} className="exit"/>
+                            </OverlayTrigger>
+                        </Card.Footer>
+        );
+    }
+
 
     return (
         <div className="p-4 center">
@@ -38,16 +52,9 @@ const Class_Card = (props) => {
                                 {props.admin}
                             </Card.Text>
                     </Card.Body>
-                    </Link>
-                        <Card.Footer style={{textAlign:'center'}}>
-                            <OverlayTrigger
-                                placement="right"
-                                delay={{ show: 250, hide: 400 }}
-                            overlay={renderTooltip}
-                            >
-                                <MdExitToApp onClick={() => {props.unenroll(props.id)}} className="exit"/>
-                            </OverlayTrigger>
-                        </Card.Footer>
+                </Link>
+                        {props.user.role === 'Student' ? renderUnenroll() : null}
+                        
                 </Card>
         </div>
     )

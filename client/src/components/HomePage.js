@@ -4,10 +4,16 @@ import { Col, Container, Row } from 'react-bootstrap'
 import Navbar1 from './Navbar'
 import Class_Card from './Class_Card'
 import {Link, Redirect, useHistory} from 'react-router-dom'
+import { MdCollectionsBookmark } from 'react-icons/md'
 
 const HomePage = () => {
     const [classes, setClasses] = useState([]);
-    const [user, setUser] = useContext(UserContext)
+    const [user, setUser] = useState({
+        _id: '',
+        email: '',
+        username: '',
+        role:''
+    });
     const hist = useHistory();
 
     const fetchClasses = async () => {
@@ -44,6 +50,24 @@ const HomePage = () => {
     }
 
     useEffect(() => {
+
+        const cookies = document.cookie.split(';');
+        cookies.forEach(cookie => {
+            let cook = decodeURI(cookie);
+            cook = cook.split('=').map(c => c.trim());
+            if (cook[0] === 'user') {
+                const temp = JSON.parse(decodeURIComponent(cook[1]));
+                setUser(() => {
+                    return {
+                        _id: temp._id,
+                        email: temp.email,
+                        username: temp.username,
+                        role:temp.role
+                    }
+                });
+            }
+        })
+
         fetchClasses().then(res => {
             setClasses(res.classes);
         });
@@ -68,6 +92,7 @@ const HomePage = () => {
                     {classes.map((val,index) => 
                         <Class_Card
                             key={index}
+                            user={user}
                             id = {val._id}
                             classname = {val.title}
                             ClassCode = {val.subjectCode}

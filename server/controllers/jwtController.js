@@ -5,7 +5,7 @@ const { User } = require('../models/User');
 exports.accessExpiry = 60 * 15; //  15 minutes
 exports.refreshExpiry = 60 * 60 * 24 * 30; //  30 days
 
-exports.setCookies = (res, user) => {
+exports.setCookies = (res, user, role) => {
     try {
         const token = this.createJWT(user);
         const refreshToken = this.createRefreshToken(user);
@@ -14,11 +14,20 @@ exports.setCookies = (res, user) => {
             maxAge: this.accessExpiry * 1000,
             // secure: true,
         });
-        res.cookie('user', user, {
-            httpOnly: false,
-            maxAge: JWT.accessExpiry * 1000,
-            // secure: true,
-        });
+        res.cookie(
+            'user',
+            JSON.stringify({
+                _id: user._id,
+                email: user.email,
+                role: role,
+                username: user.username,
+            }),
+            {
+                httpOnly: false,
+                maxAge: this.accessExpiry * 1000,
+                // secure: true,
+            }
+        );
         res.cookie('refresh', refreshToken, {
             httpOnly: true,
             maxAge: this.refreshExpiry * 1000,

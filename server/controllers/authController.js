@@ -27,13 +27,13 @@ exports.isUser = async (req, res, next) => {
             maxAge: JWT.accessExpiry * 1000,
             // secure: true,
         });
-        res.cookie('user', user, {
+        res.cookie('user', JSON.stringify(user), {
             httpOnly: false,
             maxAge: JWT.accessExpiry * 1000,
             // secure: true,
         });
     }
-    
+
     req.user = user;
     next();
 };
@@ -57,7 +57,7 @@ exports.isTeacher = async (req, res, next) => {
             maxAge: JWT.accessExpiry * 1000,
             // secure: true,
         });
-        res.cookie('user', user, {
+        res.cookie('user', JSON.stringify(user), {
             httpOnly: false,
             maxAge: JWT.accessExpiry * 1000,
             // secure: true,
@@ -91,7 +91,7 @@ exports.isStudent = async (req, res, next) => {
             maxAge: JWT.accessExpiry * 1000,
             // secure: true,
         });
-        res.cookie('user', user, {
+        res.cookie('user', JSON.stringify(user), {
             httpOnly: false,
             maxAge: JWT.accessExpiry * 1000,
             // secure: true,
@@ -152,7 +152,7 @@ exports.signup = async (req, res) => {
             role: role._id,
         });
         await newUser.save();
-        const err = JWT.setCookies(res, newUser);
+        const err = JWT.setCookies(res, newUser, role.name);
         if (err) throw err;
         res.json({
             user: {
@@ -176,7 +176,7 @@ exports.signin = async (req, res) => {
         );
         if (!checkPassword) throw 'Invalid credentials.';
         const role = await Role.findById(isUser.role);
-        const err = JWT.setCookies(res, isUser);
+        const err = JWT.setCookies(res, isUser, role.name);
         if (err) throw err;
         res.json({
             user: {

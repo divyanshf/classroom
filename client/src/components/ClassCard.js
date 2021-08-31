@@ -30,19 +30,23 @@ const Class_Card = (props) => {
 
     return (
         <div className="p-4 center">
-            <Card style={{ width: '18rem', color: "black" }} className="card1">
-                <Link to={{
-                pathname: `/class/${props.id}/stream`,
-                state: {
-                    details: {
-                        id:props.id,
-                        ClassCode: props.ClassCode,
-                        admin: props.admin,
-                        classname: props.classname,
-                        link:props.link
-                }}
-            }} className="nav-link">
+            <Card style={{ width: '18rem', color: "black" }} className="card1">    
                         <Card.Img variant="top" src="images/book1.jpg" alt="image" />
+                        <Link to={{
+                            pathname: `/class/${props.id}/stream`,
+                            state: {
+                                details: {
+                                    id:props.id,
+                                    ClassCode: props.ClassCode,
+                                    admin: props.admin,
+                                    classname: props.classname,
+                                    link:props.link
+                                }}
+                            }} 
+                            className="nav-link"
+                            style={{color: "black"}}
+                            >
+
                         <Card.Body style={{textAlign:"left"}}>
                             <Card.Title className="card_title">
                                 {props.classname}

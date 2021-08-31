@@ -79,6 +79,7 @@ const A_Class = () => {
             }
             else {
                 setError(res.success);
+                window.location.reload()
             }
         } catch (e) {
             console.log(e);
@@ -126,7 +127,7 @@ const A_Class = () => {
                                         <Card.Body className="p-4">
                                             <Card.Title>
                                                 <p> {p.author.name} </p>
-                                                <p> {p.updatedAt} </p>
+                                                <p> {(p.updatedAt.split("T")[0])} </p>
                                             </Card.Title>
                                             <Card.Text>
                                                 {p.content}

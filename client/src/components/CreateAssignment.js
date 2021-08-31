@@ -42,7 +42,7 @@ const CreateAssignment = () => {
         else{
             fetchClassPosts(sendQuestionData).then(res => {
                 if(!res.error){
-                    hist.push(`/class/${params.id}/assign`);
+                    hist.push(`/class/${params.id}/classwork`);
                 }else{
                     // setErr(res.error || 'Something')
                     console.log(res.error)

@@ -21,6 +21,4 @@ mongoose.connection.on('open', () => {
     });
 });
 
-mongoose.connect(`mongodb://${process.env.MONGO_URI}/class`);
-
-// mongoose.connect(`mongodb+srv://aditya:ujegePUqqLWfsFdm@classroomcluster.wp4nf.mongodb.net/class`);
+module.exports = mongoose.connect(`${process.env.MONGO_URI}`);

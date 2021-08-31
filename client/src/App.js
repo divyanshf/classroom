@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
 // ---------Components----------------
-import A_Class from './components/A_Class';
+import A_Class from './components/AClass';
 import Classwork from './components/Classwork';
 import Members from './components/Members';
 import HomePage from './components/HomePage';

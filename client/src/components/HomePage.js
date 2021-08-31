@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react'
 import { UserContext } from '../context/userContext'
 import { Col, Container, Row } from 'react-bootstrap'
 import Navbar1 from './Navbar'
-import Class_Card from './Class_Card'
+import Class_Card from './ClassCard'
 import {Link, Redirect, useHistory} from 'react-router-dom'
 import { MdCollectionsBookmark } from 'react-icons/md'
 

@@ -21,7 +21,8 @@ const Navbar1 = () => {
             let cook = decodeURI(cookie);
             cook = cook.split('=').map(c => c.trim());
             if (cook[0] === 'user') {
-                const temp = JSON.parse(decodeURIComponent(cook[1]));
+              const temp = JSON.parse(decodeURIComponent(cook[1]));
+              if(temp)
                 setUser(() => {
                     return {
                         _id: temp._id,
@@ -34,11 +35,20 @@ const Navbar1 = () => {
         })
   }, [])
 
-  useEffect(() => {
-    console.log(user);
-  }, [user])
+  const logout = async () => {
+    try {
+      let res = await fetch('/auth/logout');
+      console.log(res);
+      res = await res.json();
+      console.log(res);
+      if (res.success)
+        window.location.reload();
+      else throw res.error;
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
-  
     function MyVerticallyCenteredModal(props) {
       const [code, setCode] = useState('');
       const [error, setError] = useState('');
@@ -160,14 +170,12 @@ const Navbar1 = () => {
         <Navbar bg="light" className="nav" fixed="top">
             <NavLink to="/" className="nav-link" style={{color:"black", fontSize:"20px"}}>Classroom</NavLink>
             <Nav>
-            
                 <button className="navbtn" onClick={() => { user.role === 'Student' ? setModalShow(true) : setModalShow1(true) }}><AiOutlinePlus style={{ fontSize: "20px" }} /></button>
                 <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} />
                 <MyModal show={modalShow1} onHide={() => setModalShow1(false)} />
                 
-                <NavLink className="nav-link" style={{cursor:"pointer"}} to="/signin">SignIn</NavLink>
-                <NavLink className="nav-link" style={{cursor:"pointer"}} to="/signup">SignUp</NavLink>
-                <NavLink className="nav-link" style={{cursor:"pointer"}} to="/3">Logout</NavLink>
+          {user._id ? <button className="btn btn-danger" onClick={()=>{logout()}} style={{cursor:"pointer"}}>Logout</button> : <NavLink className="nav-link" style={{cursor:"pointer"}} to="/signin">Login</NavLink>}
+                
             </Nav>
         </Navbar>
     )

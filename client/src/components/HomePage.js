@@ -56,6 +56,7 @@ const HomePage = () => {
             cook = cook.split('=').map(c => c.trim());
             if (cook[0] === 'user') {
                 const temp = JSON.parse(decodeURIComponent(cook[1]));
+                if(temp)
                 setUser(() => {
                     return {
                         _id: temp._id,

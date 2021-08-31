@@ -24,8 +24,8 @@ const HomePage = () => {
                     "Content-Type": "application/json"
                 }
             });
-
             const data = await res.json();
+            if(data.error) throw data.error
             return data;
         } catch (err) {
             hist.push('/signup');
@@ -50,7 +50,6 @@ const HomePage = () => {
     }
 
     useEffect(() => {
-
         const cookies = document.cookie.split(';');
         cookies.forEach(cookie => {
             let cook = decodeURI(cookie);
@@ -69,7 +68,8 @@ const HomePage = () => {
         })
 
         fetchClasses().then(res => {
-            setClasses(res.classes);
+            if(res && res.classes)
+                setClasses(res.classes);
         });
     }, []);
 
@@ -88,8 +88,8 @@ const HomePage = () => {
              <Row>
                  <Col className="mt-3">
                  <div className="d-flex justify-content-center align-items-center flex-wrap">
-                    {classes.length == 0 ? renderEmpty() : null}
-                    {classes.map((val,index) => 
+                    {classes && classes.length == 0 ? renderEmpty() : null}
+                    {classes && classes.map((val,index) => 
                         <Class_Card
                             key={index}
                             user={user}

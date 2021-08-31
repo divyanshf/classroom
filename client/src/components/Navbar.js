@@ -41,13 +41,18 @@ const Navbar1 = () => {
       console.log(res);
       res = await res.json();
       console.log(res);
-      if (res.success)
+      if (res.success) {
         window.location.reload();
+      }
       else throw res.error;
     } catch (e) {
       console.log(e);
     }
   }
+
+  useEffect(() => {
+    console.log(user);
+  }, [user])
 
     function MyVerticallyCenteredModal(props) {
       const [code, setCode] = useState('');

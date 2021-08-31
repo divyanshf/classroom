@@ -51,7 +51,7 @@ exports.isTeacher = async (req, res, next) => {
             res.json({ error: 'Invalid Token' });
             return;
         }
-        user = verifyToken(access);
+        user = JWT.verifyToken(access);
         res.cookie('access', access, {
             httpOnly: true,
             maxAge: JWT.accessExpiry * 1000,

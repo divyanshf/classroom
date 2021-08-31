@@ -58,7 +58,14 @@ const Classwork = () => {
         fetchAssigns().then(res => {
             setAssigns(res.assigns);
         });
+
     }, [])
+
+    useEffect(()=>{
+
+        console.log(user)
+
+    }, [user])
 
     return (
         <>

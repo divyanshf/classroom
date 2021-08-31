@@ -15,9 +15,15 @@ const ClassSchema = mongoose.Schema(
         },
         admin: {
             //  Admin of the class or teacher
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-            require: true,
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+                require: true,
+            },
+            name: {
+                type: String,
+                require: true,
+            },
         },
         // posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }], // All the posts of the class
         students: [

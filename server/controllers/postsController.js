@@ -20,7 +20,10 @@ exports.addPostToClass = async (req, res) => {
         const newPost = new Post({
             title: req.body.title,
             content: req.body.content,
-            author: user._id,
+            author: {
+                user: user._id,
+                name: user.username,
+            },
             classID: req.params.id,
         });
         await newPost.save();
@@ -36,7 +39,7 @@ exports.updatePost = async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         if (!post) throw "Post doesn't exists";
-        if (post.author.toString() === user._id) {
+        if (post.author.user.toString() === user._id) {
             await Post.findByIdAndUpdate(req.params.id, {
                 title: req.body.title || post.title,
                 content: req.body.content || post.content,

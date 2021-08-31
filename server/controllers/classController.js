@@ -15,7 +15,7 @@ exports.getAllClasses = async (req, res) => {
                 students: { $elemMatch: { user: user.email } },
             });
         } else if (role.name === 'Teacher') {
-            classes = await Class.find({ admin: user._id });
+            classes = await Class.find({ 'admin.user': user._id });
         } else {
             throw 'Unauthorized User';
         }
@@ -44,7 +44,10 @@ exports.addClass = async (req, res) => {
             subjectCode: req.body.subjectCode,
             books: req.body.books,
             link: req.body.link,
-            admin: user._id,
+            admin: {
+                user: user._id,
+                name: user.username,
+            },
             students: req.body.students,
         });
         await newClass.save();

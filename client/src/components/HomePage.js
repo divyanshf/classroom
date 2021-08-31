@@ -27,11 +27,30 @@ const HomePage = () => {
         }
     }
 
+    const unenroll = async (id) => {
+        try {
+            let res = await fetch(`/class/unenroll/${id}`, { method: 'PATCH' });
+            res = await res.json();
+            if (!res.error) {
+                setClasses(prev => {
+                    return prev.filter(cls => cls.id !== id);
+                })
+                return;
+            }
+            throw res.error
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     useEffect(() => {
         fetchClasses().then(res => {
             setClasses(res.classes);
         });
     }, []);
+
+    useEffect(() => {
+    }, [classes])
 
     const renderEmpty = () => {
         return (
@@ -56,7 +75,8 @@ const HomePage = () => {
                             classname = {val.title}
                             ClassCode = {val.subjectCode}
                             link = {val.link}
-                            admin = {val.admin.name}
+                            admin={val.admin.name}
+                            unenroll = {unenroll}
                         />
                     )
                     }

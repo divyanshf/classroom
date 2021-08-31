@@ -54,7 +54,6 @@ const Class_Card = (props) => {
                     </Card.Body>
                 </Link>
                         {props.user.role === 'Student' ? renderUnenroll() : null}
-                        
                 </Card>
         </div>
     )

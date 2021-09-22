@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 5000;
 
 // Set up the express app
 const app = express();
-app.use(express.static(path.resolve(__dirname, '../client/build')));
+app.use(express.static(path.resolve(__dirname, './client/build')));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -33,7 +33,7 @@ app.use('/class', classRoutes);
 app.use('/posts', postRoutes);
 app.use('/assign', assignRoutes);
 app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+    res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
 });
 
 // Set up listener

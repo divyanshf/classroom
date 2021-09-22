@@ -176,10 +176,7 @@ exports.signin = async (req, res) => {
         );
         if (!checkPassword) throw 'Invalid credentials.';
         const role = await Role.findById(isUser.role);
-        console.log('here')
         const err = JWT.setCookies(res, isUser, role.name);
-        console.log('here 2')
-        console.log(err)
         if (err) throw err;
         res.json({
             user: {

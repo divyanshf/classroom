@@ -21,16 +21,31 @@ const Navbar1 = () => {
             let cook = decodeURI(cookie);
             cook = cook.split('=').map(c => c.trim());
             if (cook[0] === 'user') {
-              const temp = JSON.parse(decodeURIComponent(cook[1]));
-              if(temp)
-                setUser(() => {
-                    return {
-                        _id: temp._id,
-                        email: temp.email,
-                        username: temp.username,
-                        role:temp.role
-                    }
-                });
+              try{
+                console.log('parse');
+                let data = decodeURIComponent(cook[1]);
+                if(data){
+                  const temp = JSON.parse(decodeURIComponent(cook[1]));
+                  if(temp)
+                    setUser(() => {
+                        return {
+                            _id: temp._id,
+                            email: temp.email,
+                            username: temp.username,
+                            role:temp.role
+                        }
+                    });
+                }
+                else throw 'Unverified user'
+              }catch(e){
+                console.log(e);
+                setUser({
+                  _id: '',
+                  email: '',
+                  username: '',
+                  role:''
+                })
+              }
             }
         })
   }, [])
@@ -42,7 +57,7 @@ const Navbar1 = () => {
       res = await res.json();
       console.log(res);
       if (res.success) {
-        window.location.reload();
+        hist.push('/signup');
       }
       else throw res.error;
     } catch (e) {
@@ -175,9 +190,9 @@ const Navbar1 = () => {
         <Navbar bg="light" className="nav" fixed="top">
             <NavLink to="/" className="nav-link" style={{color:"black", fontSize:"20px"}}>Classroom</NavLink>
             <Nav>
-                <button className="navbtn" onClick={() => { user.role === 'Student' ? setModalShow(true) : setModalShow1(true) }}><AiOutlinePlus style={{ fontSize: "20px" }} /></button>
-                {user._id ? <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} /> : null}
-                {user._id ? <MyModal show={modalShow1} onHide={() => setModalShow1(false)} /> : null}
+                {user._id ? <button className="navbtn" onClick={() => { user.role === 'Student' ? setModalShow(true) : setModalShow1(true) }}><AiOutlinePlus style={{ fontSize: "20px" }} /></button> : null}
+                <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} />
+                <MyModal show={modalShow1} onHide={() => setModalShow1(false)} />
                 
                 {user._id ? <button className="btn btn-danger" onClick={()=>{logout()}} style={{cursor:"pointer"}}>Logout</button> : <NavLink className="nav-link" style={{cursor:"pointer"}} to="/signin">Login</NavLink>}
                 

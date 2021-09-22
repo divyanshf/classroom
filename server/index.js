@@ -1,5 +1,6 @@
 require('dotenv').config();
 require('./config/dbConfig');
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 
@@ -14,14 +15,9 @@ const PORT = process.env.PORT || 5000;
 
 // Set up the express app
 const app = express();
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 app.use(express.json());
 app.use(cookieParser());
-
-// Set up the routes
-app.use('/auth', authRoutes);
-app.use('/class', classRoutes);
-app.use('/posts', postRoutes);
-app.use('/assign', assignRoutes);
 
 // Set up cors
 app.use(
@@ -30,6 +26,15 @@ app.use(
         optionsSuccessStatus: 200,
     })
 );
+
+// Set up the routes
+app.use('/auth', authRoutes);
+app.use('/class', classRoutes);
+app.use('/posts', postRoutes);
+app.use('/assign', assignRoutes);
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+});
 
 // Set up listener
 app.listen(PORT, () => {

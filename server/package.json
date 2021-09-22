@@ -6,7 +6,8 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "set NODE_ENV=production && node index.js",
-        "dev": "set NODE_ENV=development && nodemon index.js"
+        "dev": "set NODE_ENV=development && nodemon index.js",
+        "build": "cd client && npm install && npm run build"
     },
     "author": "",
     "license": "ISC",

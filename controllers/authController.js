@@ -196,18 +196,18 @@ exports.signin = async (req, res) => {
 exports.logout = (req, res) => {
     res.cookie('access', '', {
         httpOnly: true,
-        maxAge: JWT.accessExpiry * 1000,
+        // maxAge: JWT.accessExpiry * 1000,
         // secure: true,
     });
     res.cookie('refresh', '', {
         httpOnly: true,
-        maxAge: JWT.refreshExpiry * 1000,
+        // maxAge: JWT.refreshExpiry * 1000,
         // secure: true,
     });
-    // res.cookie('user', '', {
-    //     httpOnly: false,
-    //     // maxAge: JWT.accessExpiry * 1000,
-    //     // secure: true,
-    // });
+    res.cookie('user', '', {
+        httpOnly: false,
+        // maxAge: JWT.accessExpiry * 1000,
+        // secure: true,
+    });
     res.json({ success: 'Logged out successfully.' });
 };

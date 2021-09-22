@@ -95,8 +95,9 @@ const A_Class = () => {
                         <div className="d-md-flex align-items-center justify-content-center">
                             <Jumbotron className="jumbo p-5 mt-4 col-md-9">
                                 <h1>{details.classname}</h1>
-                                <p>{details.ClassCode}</p>
-                                <p>Meet Link: <a href={details.link}>{details.link}</a> </p>
+                                <p>Join Code : {details.id}</p>
+                                <p>Subject Code : {details.ClassCode}</p>
+                                <p>Meet Link : <a href={details.link}>{details.link}</a> </p>
                             </Jumbotron>
                         </div>
                         <div className="d-md-flex align-items-center justify-content-center">

@@ -176,10 +176,10 @@ const Navbar1 = () => {
             <NavLink to="/" className="nav-link" style={{color:"black", fontSize:"20px"}}>Classroom</NavLink>
             <Nav>
                 <button className="navbtn" onClick={() => { user.role === 'Student' ? setModalShow(true) : setModalShow1(true) }}><AiOutlinePlus style={{ fontSize: "20px" }} /></button>
-                <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} />
-                <MyModal show={modalShow1} onHide={() => setModalShow1(false)} />
+                {user._id ? <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} /> : null}
+                {user._id ? <MyModal show={modalShow1} onHide={() => setModalShow1(false)} /> : null}
                 
-          {user._id ? <button className="btn btn-danger" onClick={()=>{logout()}} style={{cursor:"pointer"}}>Logout</button> : <NavLink className="nav-link" style={{cursor:"pointer"}} to="/signin">Login</NavLink>}
+                {user._id ? <button className="btn btn-danger" onClick={()=>{logout()}} style={{cursor:"pointer"}}>Logout</button> : <NavLink className="nav-link" style={{cursor:"pointer"}} to="/signin">Login</NavLink>}
                 
             </Nav>
         </Navbar>

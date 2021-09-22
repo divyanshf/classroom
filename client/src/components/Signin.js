@@ -49,7 +49,11 @@ const Signin = () => {
                     });
                     hist.push('/');
                 }else{
-                    setErr(res.error)
+                    try{
+                        setErr(res.error)
+                    }catch(e){
+                        setErr(e)
+                    }
                 }
             })
         }

@@ -5,7 +5,7 @@ import { MdAccountBox, MdEmail, MdLock } from "react-icons/md";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { UserContext } from '../context/userContext'
 
-import Navbar1 from './Navbar';
+import Navbar from './Navbar';
 
 
 const SignUp = () => {
@@ -87,7 +87,7 @@ const SignUp = () => {
 
     return (
         <>
-        <Navbar1/>
+        <Navbar/>
          <Container className="p-5 p-md-0">
              <Row className="mt-5 justify-content-center align-content-center">
                  <Col md="12" xl="6" className="mt-5 p-md-5 p-sm-5 mb-5 bg-white align-content-center justify-content-center form_bg">

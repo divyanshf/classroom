@@ -132,8 +132,8 @@ const SubmitAssignment = () => {
                              return <form key={index}>
                                 <div className="row justify-content-center align-content-center mb-3 mt-5">
                                     <div className="col-md-10">
-                                        <p>{question.question}</p>
-                                        <p>{question.points}</p>
+                                        <p style={{fontWeight:"600"}}>{question.question}</p>
+                                        <p style={{float:"right"}}>Points: {question.points}</p>
                                     </div>
                                 </div>
                                 <div className="row justify-content-center align-content-center mb-md-3">
@@ -158,7 +158,7 @@ const SubmitAssignment = () => {
                                         <label className="custom-control-label" for="customRadio1">{question.options[3]}</label>
                                     </div>
                                 </div>
-                                </ form>
+                                </form>
                             })}
                         </form>
                         <button onClick={submitHandler} className="col-md-2 btn btn-outline-success mt-2 form_bg">

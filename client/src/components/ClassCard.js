@@ -45,8 +45,7 @@ const Class_Card = (props) => {
                             }} 
                             className="nav-link"
                             style={{color: "black"}}
-                            >
-
+                        >
                         <Card.Body style={{textAlign:"left"}}>
                             <Card.Title className="card_title">
                                 {props.classname}
@@ -55,7 +54,7 @@ const Class_Card = (props) => {
                                 {props.code} <br/>
                                 {props.admin}
                             </Card.Text>
-                    </Card.Body>
+                        </Card.Body>
                 </Link>
                         {props.user.role === 'Student' ? renderUnenroll() : null}
                 </Card>

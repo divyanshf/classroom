@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {Navbar,Modal,Button, Form,Nav} from 'react-bootstrap'
+import {Navbar,Modal,Button, Form,Nav, Container} from 'react-bootstrap'
 import { AiOutlinePlus } from "react-icons/ai";
 import { NavLink, useHistory } from 'react-router-dom';
 
@@ -187,16 +187,31 @@ const Navbar1 = () => {
     }
 
     return (
-        <Navbar bg="light" className="nav" fixed="top">
-            <NavLink to="/" className="nav-link" style={{color:"black", fontSize:"20px"}}>Classroom</NavLink>
-            <Nav>
-                {user._id ? <button className="navbtn" onClick={() => { user.role === 'Student' ? setModalShow(true) : setModalShow1(true) }}><AiOutlinePlus style={{ fontSize: "20px" }} /></button> : null}
-                <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} />
-                <MyModal show={modalShow1} onHide={() => setModalShow1(false)} />
-                
-                {user._id ? <button className="btn btn-danger" onClick={()=>{logout()}} style={{cursor:"pointer"}}>Logout</button> : <NavLink className="nav-link" style={{cursor:"pointer"}} to="/signin">Login</NavLink>}
-                
+        <Navbar collapseOnSelect expand="sm" variant="light" className="nav" fixed="top">
+          <Container>
+            {user._id ?
+              <NavLink to="/" className="nav-link" style={{color:"black", fontSize:"larger", fontWeight:"600"}}>Classroom</NavLink>
+              :
+              <NavLink to="/signin" className="nav-link" style={{color:"black", fontSize:"larger", fontWeight:"600"}}>Classroom</NavLink>
+            }
+            <Navbar.Toggle style={{fontSize:"15px"}} aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav style={{marginLeft:"auto",justifyContent:"center",alignItems:"center"}}>
+                  {user._id ?
+                    <>
+                      <button className="navbtn" style={{justifyContent:"center", alignItems:"center"}} 
+                              onClick={() => { user.role === 'Student' ? setModalShow(true) : setModalShow1(true) }}><AiOutlinePlus style={{ fontSize: "20px" }} />
+                      </button> 
+                      <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} />
+                      <MyModal show={modalShow1} onHide={() => setModalShow1(false)} />
+                        <button className="btn btn-danger button1" onClick={()=>{logout()}} style={{cursor:"pointer"}}>Logout</button>
+                    </>
+                    :
+                    <NavLink className="nav-link" style={{cursor:"pointer"}} to="/signin">Login</NavLink>
+                  }
             </Nav>
+            </Navbar.Collapse>
+          </Container>
         </Navbar>
     )
 }

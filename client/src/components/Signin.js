@@ -9,7 +9,6 @@ import { FaChalkboardTeacher } from "react-icons/fa";
 import Navbar1 from './Navbar';
 
 const Signin = () => {
-    const [name,setName] = useState('');
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const [err, setErr] = useState('');
@@ -21,9 +20,6 @@ const Signin = () => {
 
     const onChangeHandler = (e) => {
         switch(e.target.name){
-            case "name":
-                setName(e.target.value)
-                break
             case "email":
                 setEmail(e.target.value)
                 break
@@ -34,7 +30,7 @@ const Signin = () => {
     }
 
     const submitHandler = () => {
-        if(!name || !email || !password){
+        if(!email || !password){
             //empty field
             setErr("Empty field!")
         }else{
@@ -43,7 +39,6 @@ const Signin = () => {
                 console.log(res);
                 if(!res.error){
                     setUser({
-                        username: res.user.username,
                         email: res.user.email,
                         role: res.user.role
                     });
@@ -83,15 +78,9 @@ const Signin = () => {
         <Navbar1/>
             <Container className="p-5 p-md-0">
                 <Row className="mt-5 justify-content-center align-content-center">
-                    <Col sm="12" md="9" xl="6" className="mt-5 p-md-5 p-sm-5 mb-5 bg-white align-content-center justify-content-center form_bg">
+                    <Col sm="12" md="7" xl="5" className="mt-5 p-md-5 p-sm-5 mb-5 bg-white align-content-center justify-content-center form_bg">
                         <h3 className="mb-5 mt-4">Sign In</h3>
                         <Form className="mb-5">
-                            <Form.Group as={Row} className="mb-3 justify-content-center align-content-center">
-                                <Form.Label column md="1" xs="1"><MdAccountBox style={{fontSize:"20px"}}/></Form.Label>
-                                <Col md="8" xs="10">
-                                    <Form.Control className="form_bg1" name="name" value={name} onChange={onChangeHandler} type="text" placeholder="Username" autoComplete="off"/>
-                                </Col>
-                            </Form.Group>
                             <Form.Group as={Row} className="mb-3 justify-content-center align-content-center">
                                 <Form.Label column md="1" xs="1"><MdEmail style={{fontSize:"20px"}}/></Form.Label>
                                 <Col md="8" xs="10">

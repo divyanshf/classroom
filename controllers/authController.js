@@ -181,7 +181,6 @@ exports.signin = async (req, res) => {
         res.json({
             user: {
                 email: isUser.email,
-                username: isUser.username,
                 role: role.name,
             },
         });

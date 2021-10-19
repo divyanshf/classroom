@@ -96,7 +96,7 @@ const SignUp = () => {
                          <Form.Group as={Row} className="mb-3 justify-content-center align-content-center">
                             <Form.Label column md="1" xs="1"><MdAccountBox style={{fontSize:"20px"}}/></Form.Label>
                             <Col md="8" xs="10">
-                                <Form.Control className="form_bg1" name="name" value={name} onChange={onChangeHandler} type="text" placeholder="Username" autoComplete="off"/>
+                                <Form.Control className="form_bg1" name="name" value={name} onChange={onChangeHandler} type="text" placeholder="Name" autoComplete="off"/>
                             </Col>
                          </Form.Group>
                          <Form.Group as={Row} className="mb-3 justify-content-center align-content-center">

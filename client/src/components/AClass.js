@@ -47,7 +47,7 @@ const A_Class = () => {
     useEffect(() => {
 
         fetchPosts().then(res => {
-            if(res.posts)
+            if(res && res.posts)
                 setPosts(res.posts)
         });
 
@@ -128,7 +128,7 @@ const A_Class = () => {
                                         <Card.Body className="p-4">
                                             <Card.Title>
                                                 <p> {p.author.name} </p>
-                                                <p> {(p.updatedAt.split("T")[0])} </p>
+                                                <p style={{fontSize:'0.8rem', position:'absolute', right: '1rem', top: '1rem'}}> {(p.updatedAt.split("T")[0])} </p>
                                             </Card.Title>
                                             <Card.Text>
                                                 {p.content}

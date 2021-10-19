@@ -119,9 +119,8 @@ const Navbar1 = () => {
     }
     
     function MyModal(props) {
-        const [name,setName] = useState('');
-        const [subjectcode,setSubjectcode] = useState('');
-        const [link,setLink] = useState('');
+      const [name,setName] = useState('');
+      const [subjectcode,setSubjectcode] = useState('');
       const [books, setBooks] = useState('');
       const [error, setError] = useState('');
       
@@ -132,7 +131,6 @@ const Navbar1 = () => {
             title: name,
             subjectCode: subjectcode,
             books: books.split(','),
-            link: link,
           }),
           headers: {
             'Content-Type':'application/json'
@@ -168,9 +166,6 @@ const Navbar1 = () => {
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Control type="text" name="subjectcode" id="subjectcode" value={subjectcode} onChange={(e) => setSubjectcode(e.target.value)} placeholder="Subject Code" />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Control type="text" name="link" id="link" value={link} onChange={(e) => setLink(e.target.value)} placeholder="Link to the Video room" />
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Control type="text" name="books" id="books" value={books} onChange={(e) => setBooks(e.target.value)} placeholder="Recommended Books" />

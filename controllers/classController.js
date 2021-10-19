@@ -38,12 +38,27 @@ exports.getClassById = async (req, res) => {
 // Add a new class
 exports.addClass = async (req, res) => {
     const user = req.user;
+    //creating the meet link
+    function makeid() {
+        var secret_text="";
+        var possible_text = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for(var i=0;i<10;i++)
+        {
+            secret_text+=possible_text.charAt(Math.floor(Math.random()*possible_text.length));
+        }
+
+        return secret_text;
+    }
+    //actual meet link
+    const meet = `meet.google.com/lookup/${makeid()}`;
+
     try {
         const newClass = new Class({
             title: req.body.title,
             subjectCode: req.body.subjectCode,
             books: req.body.books,
-            link: req.body.link,
+            link: meet,
             admin: {
                 user: user._id,
                 name: user.username,

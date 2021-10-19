@@ -97,7 +97,7 @@ const A_Class = () => {
                                 <h1>{details.classname}</h1>
                                 <p>Join Code : {details.id}</p>
                                 <p>Subject Code : {details.ClassCode}</p>
-                                <p>Meet Link : <a href={details.link}>{details.link}</a> </p>
+                                <p>Meet Link : <a href={`https://${details.link}`} target="_blank" style={{color:"white", textDecoration:"none"}}>https://{details.link}</a> </p>
                             </Jumbotron>
                         </div>
                         <div className="d-md-flex align-items-center justify-content-center">

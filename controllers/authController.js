@@ -162,6 +162,7 @@ exports.signup = async (req, res) => {
             },
         });
     } catch (e) {
+        console.log(e);
         res.json({ error: e || 'Something went wrong!' });
     }
 };

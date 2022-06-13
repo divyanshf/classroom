@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 const mongoose = require('mongoose');
 const { Role } = require('../models/Role');
 
@@ -21,4 +21,4 @@ mongoose.connection.on('open', () => {
     });
 });
 
-module.exports = mongoose.connect(`${process.env.MONGO_URI}`);
+mongoose.connect(`${process.env.MONGO_URI}`);
